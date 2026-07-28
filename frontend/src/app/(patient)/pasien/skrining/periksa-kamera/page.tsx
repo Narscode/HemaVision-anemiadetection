@@ -52,7 +52,7 @@ export default function CameraCheckPage() {
   }, []);
 
   const handleContinueScreening = () => {
-    router.push(ROUTES.PATIENT.SKRINING_LANGKAH1);
+    router.push(ROUTES.PATIENT.SKRINING_CAPTURE);
   };
 
   return (

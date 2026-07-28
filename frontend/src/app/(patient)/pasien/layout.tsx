@@ -17,6 +17,7 @@ export default function PatientLayout({
     pathname.toLowerCase().startsWith("/pasien/onboarding") ||
     pathname.startsWith("/pasien/skrining/persiapan") ||
     pathname.startsWith("/pasien/skrining/periksa-kamera") ||
+    pathname.startsWith("/pasien/skrining/capture") ||
     pathname.startsWith("/pasien/setup");
 
   if (isFullPage) {
