@@ -5,11 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/lib/routes";
-import { BookOpen, FileCheck, History, Home, User } from "lucide-react";
+import { Home, FileBarChart2, History, BookOpen, User } from "lucide-react";
 
-const NAV_ITEMS = [
+export interface NavItem {
+  label: string;
+  href: string;
+  icon: React.ElementType;
+}
+
+export const PATIENT_NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: ROUTES.PATIENT.HOME, icon: Home },
-  { label: "Hasil", href: ROUTES.PATIENT.HASIL, icon: FileCheck },
+  { label: "Skrining", href: ROUTES.PATIENT.SKRINING, icon: FileBarChart2 },
   { label: "Riwayat", href: ROUTES.PATIENT.RIWAYAT, icon: History },
   { label: "Edukasi", href: ROUTES.PATIENT.EDUKASI, icon: BookOpen },
   { label: "Profil", href: ROUTES.PATIENT.PROFIL, icon: User },
@@ -19,28 +25,41 @@ export function PatientBottomNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 shadow-lg px-2 py-1 flex items-center justify-around max-w-2xl mx-auto">
-      {NAV_ITEMS.map((item) => {
-        const Icon = item.icon;
-        const isActive =
-          item.href === ROUTES.PATIENT.HOME
-            ? pathname === ROUTES.PATIENT.HOME
-            : pathname.startsWith(item.href);
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAF8FF] border-t border-[#C3C6D7]/40 shadow-[0px_-2px_10px_rgba(0,0,0,0.05)] p-3">
+      <div className="w-full max-w-[640px] mx-auto flex items-center justify-between">
+        {PATIENT_NAV_ITEMS.map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            item.href === ROUTES.PATIENT.HOME
+              ? pathname === ROUTES.PATIENT.HOME
+              : pathname.startsWith(item.href) ||
+                (item.label === "Skrining" &&
+                  (pathname.startsWith("/pasien/Onboarding") || pathname.startsWith("/pasien/skrining")));
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-all min-w-[56px] min-h-[48px] justify-center",
-              isActive ? "text-brand-600 font-bold" : "text-slate-500 hover:text-slate-800"
-            )}
-          >
-            <Icon className={cn("w-5 h-5 transition-transform", isActive && "scale-110")} />
-            <span className="text-[11px] leading-none">{item.label}</span>
-          </Link>
-        );
-      })}
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 min-w-[64px] min-h-[52px]",
+                isActive
+                  ? "bg-[#86F2E4] text-[#006F66] font-medium shadow-2xs"
+                  : "text-[#434655] hover:text-[#191B23] font-medium"
+              )}
+            >
+              <Icon
+                className={cn(
+                  "w-[18px] h-[18px] transition-transform",
+                  isActive ? "text-[#006F66] stroke-[2.2]" : "text-[#434655] stroke-[1.8]"
+                )}
+              />
+              <span className="text-[13px] sm:text-sm leading-tight text-center">
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }
