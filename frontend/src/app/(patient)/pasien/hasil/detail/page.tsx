@@ -17,7 +17,6 @@ import {
   Copy,
   Check,
   Microscope,
-  FileText,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
@@ -25,7 +24,7 @@ export default function ScreeningDetailInspectionPage() {
   const router = useRouter();
   const [copiedId, setCopiedId] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
-  const [showExplanationModal, setShowExplanationModal] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const examinationId = "HMV-200726-00182";
 
@@ -235,12 +234,24 @@ export default function ScreeningDetailInspectionPage() {
 
             <button
               type="button"
-              onClick={() => setShowExplanationModal(true)}
+              onClick={() => setShowExplanation(!showExplanation)}
               className="w-full py-3 px-4 bg-white/20 hover:bg-white/30 border border-white/30 rounded-lg text-center font-bold text-white text-base transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Lihat Penjelasan Hasil</span>
-              <ExternalLink className="w-4 h-4 text-white" />
+              <span>{showExplanation ? "Tutup Penjelasan" : "Lihat Penjelasan Hasil"}</span>
+              {showExplanation ? <ChevronUp className="w-4 h-4 text-white" /> : <ChevronDown className="w-4 h-4 text-white" />}
             </button>
+
+            {/* Inline Explanation Section */}
+            {showExplanation && (
+              <div className="p-4 bg-white/15 rounded-lg text-sm text-white/95 space-y-2 border border-white/20 animate-fade-in">
+                <p>
+                  Kategori <strong className="underline decoration-white font-bold">Risiko Anemia Sedang</strong> menunjukkan bahwa analisis citra mendeteksi rona warna konjungtiva dan kuku yang memerlukan konfirmasi medis laboratorium.
+                </p>
+                <p>
+                  Ini bukan diagnosis medis final. Sangat disarankan untuk mendatangi fasilitas kesehatan terdekat untuk melakukan tes darah lengkap (CBC).
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
@@ -347,41 +358,6 @@ export default function ScreeningDetailInspectionPage() {
           </button>
         </div>
       </footer>
-
-      {/* Explanation Modal */}
-      {showExplanationModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="w-full max-w-[500px] bg-white rounded-2xl p-6 space-y-4 shadow-2xl animate-pop-in">
-            <div className="flex items-center justify-between border-b border-[#C3C6D7]/40 pb-3">
-              <h3 className="text-[#004AC6] font-bold text-lg">Penjelasan Hasil Skrining</h3>
-              <button
-                type="button"
-                onClick={() => setShowExplanationModal(false)}
-                className="text-[#737686] hover:text-[#191B23] p-1 font-bold"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-3 text-sm text-[#434655] leading-relaxed">
-              <p>
-                Kategori <strong className="text-[#BC4800]">Risiko Anemia Sedang</strong> menunjukkan bahwa analisis citra mendeteksi rona warna konjungtiva dan kuku yang memerlukan konfirmasi medis laboratorium.
-              </p>
-              <p>
-                Ini bukan diagnosis medis final. Sangat disarankan untuk mendatangi fasilitas kesehatan terdekat untuk melakukan tes darah lengkap (CBC).
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowExplanationModal(false)}
-              className="w-full py-3 bg-[#004AC6] text-white font-semibold text-sm rounded-xl hover:bg-[#003DA3] transition-colors"
-            >
-              Mengerti
-            </button>
-          </div>
-        </div>
-      )}
 
     </main>
   );

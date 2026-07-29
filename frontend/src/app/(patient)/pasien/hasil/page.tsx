@@ -1,151 +1,115 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
+  FileText,
   Building2,
   ExternalLink,
-  Info,
   ChevronRight,
-  ShieldAlert,
-  Activity,
-  FileText,
+  Info,
+  CheckCircle2,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
 export default function PatientScreeningResultOverviewPage() {
   const router = useRouter();
-  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const handleFollowUpRecommendation = () => {
     router.push(ROUTES.PATIENT.TINDAK_LANJUT);
   };
 
+  const handleGoToDetail = () => {
+    router.push(ROUTES.PATIENT.HASIL_DETAIL);
+  };
+
   return (
-    <main className="min-h-screen w-full bg-gradient-to-b from-[#FAF8FF] via-[#FAF8FF] to-[#FAF8FF] font-sans pb-28 flex flex-col items-center justify-start p-4 sm:p-6 select-none overflow-hidden">
+    <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-28 flex flex-col items-center justify-start select-none overflow-x-hidden">
       
-      <div className="w-full max-w-[672px] mx-auto py-6 flex flex-col items-center space-y-6 animate-pop-in">
+      {/* Main Container */}
+      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-6">
         
-        {/* Header Title & Location */}
-        <div className="text-center space-y-2">
-          <h1 className="text-[#191B23] text-2xl sm:text-3xl font-semibold leading-snug tracking-tight">
-            Hasil Skrining Anda (20 Juli 2026)
-          </h1>
-          <div className="flex items-center justify-center gap-1.5 text-[#434655] text-base font-normal">
-            <Building2 className="w-4 h-4 text-[#434655]" />
-            <span>Puskesmas Jakarta Selatan</span>
+        {/* FACILITY LOCATION & DATE BADGE */}
+        <div className="w-full bg-white rounded-xl border border-[#C3C6D7] p-4 shadow-xs flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#004AC6]/10 rounded-full flex items-center justify-center text-[#004AC6]">
+              <Building2 className="w-5 h-5 text-[#004AC6]" />
+            </div>
+            <div>
+              <h1 className="text-[#191B23] font-bold text-base">Puskesmas Jaksel</h1>
+              <p className="text-[#434655] text-xs font-normal">Pemeriksaan tanggal 20 Juli 2026</p>
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#86F2E4]/30 text-[#006F66] text-xs font-semibold rounded-full border border-[#86F2E4]">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#006F66]" />
+            <span>Selesai</span>
           </div>
         </div>
 
-        {/* Main Screening Result Hero Card (Terracotta / Amber Warning Theme) */}
-        <div className="w-full bg-[#BC4800] rounded-xl border border-[#943700] p-8 sm:p-10 shadow-xl flex flex-col items-center text-center space-y-4 text-[#FFEDE6] animate-pop-in relative overflow-hidden group">
+        {/* HERO TERRACOTTA RESULT CARD */}
+        <div className="w-full bg-gradient-to-br from-[#FF9E78] via-[#D85A18] to-[#BC4800] rounded-2xl p-6 sm:p-8 shadow-xl text-white space-y-6 relative overflow-hidden group">
           
-          {/* Subtle Radial Ambient Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(255,237,230,0.15)_0%,rgba(255,237,230,0)_80%)] pointer-events-none" />
+          {/* Subtle Ambient Background Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/10 pointer-events-none" />
 
-          {/* Animated Warning Icon Badge */}
-          <div className="p-3 bg-[#FFEDE6]/15 rounded-2xl flex items-center justify-center text-[#FFEDE6] backdrop-blur-xs animate-bounce [animation-duration:2.5s]">
-            <AlertTriangle className="w-12 h-12 text-[#FFEDE6] stroke-[2.2] drop-shadow-sm" />
+          {/* Header Row: Badge */}
+          <div className="flex items-center justify-between relative z-10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-xs font-bold uppercase tracking-wider text-white">
+              <AlertTriangle className="w-4 h-4 text-amber-200 fill-amber-200/20" />
+              <span>HASIL SKRINING</span>
+            </div>
+            <span className="text-xs text-white/80 font-mono">HMV-200726-00182</span>
           </div>
 
           {/* Result Level Title */}
-          <div className="space-y-1">
-            <h2 className="text-[#FFEDE6] text-2xl sm:text-3xl font-semibold leading-tight tracking-wide uppercase">
+          <div className="space-y-1 relative z-10">
+            <h2 className="text-white text-3xl sm:text-4xl font-extrabold leading-tight tracking-tight uppercase">
               RISIKO ANEMIA:<br />SEDANG
             </h2>
           </div>
 
           {/* Result Description */}
-          <p className="text-[#FFEDE6]/90 text-base sm:text-lg font-normal leading-relaxed max-w-lg mx-auto">
+          <p className="text-[#FFEDE6] text-base sm:text-lg font-normal leading-relaxed max-w-lg relative z-10">
             Hasil menunjukkan adanya indikasi yang perlu diperhatikan. Ini merupakan hasil skrining, bukan diagnosis anemia.
+          </p>
+
+          {/* Action Buttons Stack */}
+          <div className="w-full space-y-3 pt-2 relative z-10">
+            
+            {/* Button 1: Rekomendasi Tindak Lanjut */}
+            <button
+              type="button"
+              onClick={handleFollowUpRecommendation}
+              className="group/btn w-full py-4 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.99] text-white font-bold text-sm sm:text-base rounded-xl shadow-md shadow-[#004AC6]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <span>Rekomendasi Tindak Lanjut</span>
+              <ExternalLink className="w-5 h-5 text-white stroke-[2.5] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+            </button>
+
+            {/* Button 2: Lihat Detail Hasil */}
+            <button
+              type="button"
+              onClick={handleGoToDetail}
+              className="w-full py-3.5 px-6 bg-white/20 hover:bg-white/30 active:scale-[0.99] border border-white/30 text-white font-bold text-sm sm:text-base rounded-xl shadow-2xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>Lihat Detail Hasil</span>
+              <ChevronRight className="w-4 h-4 text-white" />
+            </button>
+          </div>
+
+        </div>
+
+        {/* MEDICAL DISCLAIMER CARD */}
+        <div className="w-full bg-[#EDEDF9] border border-[#C3C6D7]/60 rounded-xl p-4 flex items-start gap-3 text-xs sm:text-sm text-[#434655]">
+          <Info className="w-5 h-5 text-[#004AC6] flex-shrink-0 mt-0.5" />
+          <p className="leading-relaxed">
+            Pemeriksaan ini memanfaatkan teknologi visi komputer non-invasif. Konsultasikan ke fasilitas pelayanan kesehatan terdekat untuk mendapatkan pemeriksaan konfirmasi Hb resmi.
           </p>
         </div>
 
-        {/* Action Buttons Stack */}
-        <div className="w-full space-y-3 pt-2">
-          
-          {/* Button 1: Rekomendasi Tindak Lanjut */}
-          <button
-            type="button"
-            onClick={handleFollowUpRecommendation}
-            className="group w-full py-4 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.99] text-white font-bold text-sm sm:text-base rounded-xl shadow-md shadow-[#004AC6]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
-          >
-            <span>Rekomendasi Tindak Lanjut</span>
-            <ExternalLink className="w-5 h-5 text-white stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </button>
-
-          {/* Button 2: Lihat Detail Hasil */}
-          <button
-            type="button"
-            onClick={() => router.push(ROUTES.PATIENT.HASIL_DETAIL)}
-            className="w-full py-3.5 px-6 bg-transparent hover:bg-white/80 active:scale-[0.99] border border-[#C3C6D7] text-[#004AC6] font-bold text-sm sm:text-base rounded-xl shadow-2xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
-          >
-            <span>Lihat Detail Hasil</span>
-            <ChevronRight className="w-4 h-4 text-[#004AC6]" />
-          </button>
-
-        </div>
-
-        {/* Disclaimer Info Card */}
-        <div className="w-full pt-4">
-          <div className="w-full p-4 bg-[#EDEDF9] rounded-lg border border-[#C3C6D7] flex items-start gap-4 shadow-2xs">
-            <Info className="w-5 h-5 text-[#737686] flex-shrink-0 mt-0.5" />
-            <p className="text-[#434655] text-sm font-normal leading-relaxed">
-              HemaVision membantu skrining awal, tidak menggantikan diagnosis tenaga kesehatan.
-            </p>
-          </div>
-        </div>
-
       </div>
-
-      {/* Detailed Result Breakdown Modal */}
-      {showDetailModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="w-full max-w-[500px] bg-white rounded-2xl p-6 space-y-6 shadow-2xl animate-pop-in">
-            <div className="flex items-center justify-between border-b border-[#C3C6D7]/40 pb-4">
-              <div className="flex items-center gap-2 text-[#004AC6] font-bold text-lg">
-                <Activity className="w-5 h-5" />
-                <span>Rincian Detail Skrining</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowDetailModal(false)}
-                className="text-[#737686] hover:text-[#191B23] font-bold text-sm p-1"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-3 text-sm text-[#434655]">
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-[#737686]">Tanggal Skrining:</span>
-                <span className="font-semibold text-[#191B23]">20 Juli 2026</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-[#737686]">Estimasi Hb AI:</span>
-                <span className="font-semibold text-[#BC4800]">10.8 g/dL (Sedang)</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-[#737686]">Kualitas Citra Konjungtiva:</span>
-                <span className="font-semibold text-[#006F66]">Memenuhi Standar</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-[#737686]">Kualitas Citra Kuku & Telapak:</span>
-                <span className="font-semibold text-[#006F66]">Memenuhi Standar</span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowDetailModal(false)}
-              className="w-full py-3 bg-[#004AC6] text-white font-semibold text-sm rounded-xl hover:bg-[#003DA3] transition-colors"
-            >
-              Tutup Rincian
-            </button>
-          </div>
-        </div>
-      )}
 
     </main>
   );

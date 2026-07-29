@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import {
   Calendar,
@@ -13,17 +13,18 @@ import {
   CheckCircle2,
   HeartPulse,
   Syringe,
-  X,
-  Building2,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
 export default function FollowUpRecommendationsPage() {
   const router = useRouter();
-  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
 
   const handleStartNewScreening = () => {
     router.push(ROUTES.PATIENT.SKRINING_PERSIAPAN);
+  };
+
+  const handleGoToDetail = () => {
+    router.push(ROUTES.PATIENT.HASIL_DETAIL);
   };
 
   return (
@@ -42,7 +43,7 @@ export default function FollowUpRecommendationsPage() {
             
             {/* Step Card 1: Pemeriksaan Hb Konfirmasi */}
             <div
-              onClick={() => setShowAppointmentModal(true)}
+              onClick={handleGoToDetail}
               className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#2563EB]/5"
             >
               {/* Corner Curve Decoration */}
@@ -77,7 +78,7 @@ export default function FollowUpRecommendationsPage() {
 
             {/* Step Card 2: Konsultasi Tenaga Kesehatan */}
             <div
-              onClick={() => setShowAppointmentModal(true)}
+              onClick={handleGoToDetail}
               className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#BC4800]/5"
             >
               {/* Corner Curve Decoration */}
@@ -150,7 +151,7 @@ export default function FollowUpRecommendationsPage() {
           <div className="pt-2 flex justify-center">
             <button
               type="button"
-              onClick={() => router.push(ROUTES.PATIENT.HASIL_DETAIL)}
+              onClick={handleGoToDetail}
               className="w-full sm:w-auto py-3.5 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.98] text-white font-bold text-sm rounded-lg shadow-md shadow-[#004AC6]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <FileText className="w-4 h-4 text-white" />
@@ -250,57 +251,6 @@ export default function FollowUpRecommendationsPage() {
         </section>
 
       </div>
-
-      {/* Appointment Detail Modal */}
-      {showAppointmentModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="w-full max-w-[500px] bg-white rounded-2xl p-6 space-y-6 shadow-2xl animate-pop-in">
-            <div className="flex items-center justify-between border-b border-[#C3C6D7]/40 pb-4">
-              <div className="flex items-center gap-2 text-[#004AC6] font-bold text-lg">
-                <Building2 className="w-5 h-5" />
-                <span>Jadwal Pemeriksaan Darah</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowAppointmentModal(false)}
-                className="text-[#737686] hover:text-[#191B23] p-1 rounded-full hover:bg-gray-100"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-sm text-[#434655]">
-              <div className="p-4 bg-[#EDEDF9] rounded-xl space-y-2">
-                <div className="font-bold text-[#191B23] text-base">Puskesmas Jakarta Selatan</div>
-                <div className="text-xs text-[#737686]">Jl. Kyai Maja No. 10, Kebayoran Baru</div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#737686]">Tanggal & Waktu:</span>
-                  <span className="font-semibold text-[#006A61]">Jumat, 24 Juli 2026 (09.00 WIB)</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#737686]">Jenis Pemeriksaan:</span>
-                  <span className="font-semibold text-[#191B23]">Darah Lengkap (CBC & Hb)</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#737686]">Petugas Pendamping:</span>
-                  <span className="font-semibold text-[#191B23]">dr. Maya Sari, Sp.PK</span>
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowAppointmentModal(false)}
-              className="w-full py-3.5 bg-[#004AC6] text-white font-semibold text-sm rounded-xl hover:bg-[#003DA3] transition-colors"
-            >
-              Tutup Rincian
-            </button>
-          </div>
-        </div>
-      )}
 
     </main>
   );
