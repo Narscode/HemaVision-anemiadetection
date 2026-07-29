@@ -22,6 +22,7 @@ import {
   Info,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
+import { PatientBottomNavigation } from "@/components/patient/PatientBottomNavigation";
 
 export default function ExaminationRecommendationPage() {
   const router = useRouter();
@@ -420,17 +421,20 @@ export default function ExaminationRecommendationPage() {
             {openAbout ? <ChevronUp className="w-5 h-5 text-[#434655]" /> : <ChevronDown className="w-5 h-5 text-[#434655]" />}
           </button>
 
-          {openAbout && (
-            <div className="p-4 border-t border-[#C3C6D7] text-sm text-[#434655] space-y-2 bg-white animate-fade-in">
-              <p>
-                Rekomendasi ini disusun berdasarkan panduan penanganan awal risiko anemia dan dirancang untuk membantu komunikasi antara pasien dan tenaga medis secara efektif.
-              </p>
-            </div>
-          )}
+            {openAbout && (
+              <div className="p-4 border-t border-[#C3C6D7] text-sm text-[#434655] space-y-2 bg-white animate-fade-in">
+                <p>
+                  Rekomendasi ini disusun berdasarkan panduan penanganan awal risiko anemia dan dirancang untuk membantu komunikasi antara pasien dan tenaga medis secara efektif.
+                </p>
+              </div>
+            )}
+          </div>
+
         </div>
 
-      </div>
+        {/* Bottom Navigation Bar */}
+        <PatientBottomNavigation />
 
-    </main>
-  );
-}
+      </main>
+    );
+  }

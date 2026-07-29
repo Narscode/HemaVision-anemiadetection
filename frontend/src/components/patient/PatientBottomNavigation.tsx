@@ -36,7 +36,8 @@ export function PatientBottomNavigation() {
                 (item.label === "Skrining" &&
                   (pathname.startsWith("/pasien/Onboarding") ||
                    pathname.startsWith("/pasien/skrining") ||
-                   pathname.startsWith("/pasien/hasil")));
+                   pathname.startsWith("/pasien/hasil") ||
+                   pathname.startsWith("/pasien/tindak-lanjut")));
 
           return (
             <Link
