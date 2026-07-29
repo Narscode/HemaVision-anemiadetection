@@ -34,7 +34,9 @@ export function PatientBottomNavigation() {
               ? pathname === ROUTES.PATIENT.HOME
               : pathname.startsWith(item.href) ||
                 (item.label === "Skrining" &&
-                  (pathname.startsWith("/pasien/Onboarding") || pathname.startsWith("/pasien/skrining")));
+                  (pathname.startsWith("/pasien/Onboarding") ||
+                   pathname.startsWith("/pasien/skrining") ||
+                   pathname.startsWith("/pasien/hasil")));
 
           return (
             <Link
