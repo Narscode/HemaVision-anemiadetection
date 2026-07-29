@@ -24,6 +24,7 @@ export const ROUTES = {
     TINDAK_LANJUT: "/pasien/tindak-lanjut",
     RIWAYAT: "/pasien/riwayat",
     EDUKASI: "/pasien/edukasi",
+    EDUKASI_DETAIL: "/pasien/edukasi/detail",
     PROFIL: "/pasien/profil",
     SKRINING: "/pasien/skrining",
     SKRINING_PERSIAPAN: "/pasien/skrining/persiapan",

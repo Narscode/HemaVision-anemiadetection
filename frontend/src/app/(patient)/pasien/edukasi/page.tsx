@@ -105,14 +105,13 @@ export default function PatientEducationPage() {
             Kelelahan bisa menjadi tanda berbagai kondisi medis, bukan hanya anemia. Ketahui perbedaannya dan kapan Anda perlu khawatir.
           </p>
 
-          <button
-            type="button"
-            onClick={() => setHeroExpanded(!heroExpanded)}
+          <Link
+            href={ROUTES.PATIENT.EDUKASI_DETAIL}
             className="px-6 py-3 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.98] text-white font-semibold text-sm rounded-lg shadow-md transition-all cursor-pointer inline-flex items-center gap-2 group/btn"
           >
-            <span>{heroExpanded ? "Tutup Info Detail" : "Pelajari Lebih Lanjut"}</span>
+            <span>Pelajari Lebih Lanjut</span>
             <ArrowRight className="w-4 h-4 text-white group-hover/btn:translate-x-1 transition-transform" />
-          </button>
+          </Link>
 
           {heroExpanded && (
             <div className="pt-4 border-t border-white/20 text-sm text-[#EEEFFF] space-y-2 animate-fade-in">
