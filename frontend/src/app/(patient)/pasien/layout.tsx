@@ -14,10 +14,11 @@ export default function PatientLayout({
   
   // Full page mode without top header/bottom navbar ONLY for onboarding & setup
   const isFullPage =
-    pathname.toLowerCase().startsWith("/pasien/onboarding") ||
+    (pathname.toLowerCase().startsWith("/pasien/onboarding") && !pathname.toLowerCase().includes("/selesai")) ||
     pathname.startsWith("/pasien/skrining/persiapan") ||
     pathname.startsWith("/pasien/skrining/periksa-kamera") ||
     pathname.startsWith("/pasien/skrining/capture") ||
+    pathname.startsWith("/pasien/skrining/proses") ||
     pathname.startsWith("/pasien/setup");
 
   if (isFullPage) {

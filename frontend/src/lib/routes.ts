@@ -27,6 +27,7 @@ export const ROUTES = {
     SKRINING_PERSIAPAN: "/pasien/skrining/persiapan",
     SKRINING_PERIKSA_KAMERA: "/pasien/skrining/periksa-kamera",
     SKRINING_CAPTURE: "/pasien/skrining/capture",
+    SKRINING_PROSES: "/pasien/skrining/proses",
     ONBOARDING_LANGKAH1: "/pasien/Onboarding/langkah-1",
     ONBOARDING_LANGKAH2: "/pasien/Onboarding/langkah-2",
     ONBOARDING_LANGKAH3: "/pasien/Onboarding/langkah-3",
