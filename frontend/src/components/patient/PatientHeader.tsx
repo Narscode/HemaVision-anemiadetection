@@ -2,18 +2,35 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/routes";
+import { ArrowLeft } from "lucide-react";
 
 export function PatientHeader() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const showBackButton = pathname.startsWith("/pasien/tindak-lanjut");
+
   return (
     <header className="bg-[#FAF8FF] border-b border-[#C3C6D7] sticky top-0 z-30 px-4 h-16 flex items-center justify-between shadow-2xs">
-      <Link href={ROUTES.PATIENT.HOME} className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2.5">
+        {showBackButton && (
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="p-1.5 rounded-full text-[#434655] hover:text-[#191B23] hover:bg-[#E7E7F3]/70 transition-colors cursor-pointer flex items-center justify-center"
+            aria-label="Kembali"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#434655]" />
+          </button>
+        )}
+        <Link href={ROUTES.PATIENT.HOME} className="flex items-center gap-2">
           <span className="font-bold text-[#004AC6] text-2xl tracking-tight leading-8">
             HemaVision
           </span>
-        </div>
-      </Link>
+        </Link>
+      </div>
 
       <Link
         href={ROUTES.PATIENT.PROFIL}

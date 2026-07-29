@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ArrowLeft,
-  MoreVertical,
   Calendar,
   Clock,
   Activity,
@@ -22,10 +20,16 @@ import { ROUTES } from "@/lib/routes";
 
 export default function FollowUpRecommendationsPage() {
   const router = useRouter();
+  const [activeCardId, setActiveCardId] = useState<string>("card-1");
+  const [clickedAnimationCardId, setClickedAnimationCardId] = useState<string | null>(null);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
 
-  const handleBackToResults = () => {
-    router.push(ROUTES.PATIENT.HASIL);
+  const handleCardClick = (cardId: string) => {
+    setActiveCardId(cardId);
+    setClickedAnimationCardId(cardId);
+    setTimeout(() => {
+      setClickedAnimationCardId(null);
+    }, 400);
   };
 
   const handleStartNewScreening = () => {
@@ -35,35 +39,8 @@ export default function FollowUpRecommendationsPage() {
   return (
     <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-28 flex flex-col items-center justify-start select-none overflow-x-hidden">
       
-      {/* Top Navbar Header */}
-      <header className="w-full bg-[#FAF8FF] border-b border-[#C3C6D7] px-4 py-3 shadow-xs sticky top-0 z-30 backdrop-blur-md">
-        <div className="w-full max-w-[672px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={handleBackToResults}
-              className="p-2 rounded-full text-[#434655] hover:text-[#191B23] hover:bg-[#E7E7F3]/60 transition-colors cursor-pointer"
-              aria-label="Kembali ke Hasil"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <h1 className="text-[#004AC6] text-xl sm:text-2xl font-bold tracking-tight">
-              Tindak Lanjut Anda
-            </h1>
-          </div>
-
-          <button
-            type="button"
-            className="p-2 rounded-full text-[#434655] hover:text-[#191B23] hover:bg-[#E7E7F3]/60 transition-colors cursor-pointer"
-            aria-label="Menu Opsi"
-          >
-            <MoreVertical className="w-5 h-5" />
-          </button>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <div className="w-full max-w-[672px] mx-auto px-4 py-8 space-y-10 animate-pop-in">
+      {/* Main Content Area */}
+      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-10">
         
         {/* SECTION 1: LANGKAH DIREKOMENDASIKAN */}
         <section className="space-y-4">
@@ -73,14 +50,31 @@ export default function FollowUpRecommendationsPage() {
 
           <div className="space-y-4">
             
-            {/* Step Card 1: Pemeriksaan Hb Konfirmasi (Active Scheduled) */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden space-y-2 animate-pop-in">
+            {/* Step Card 1: Pemeriksaan Hb Konfirmasi */}
+            <div
+              onClick={() => handleCardClick("card-1")}
+              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
+                activeCardId === "card-1"
+                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#2563EB]/5"
+                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
+              } ${
+                clickedAnimationCardId === "card-1"
+                  ? "scale-[0.98] transition-transform duration-200"
+                  : "hover:-translate-y-0.5"
+              }`}
+            >
               {/* Corner Curve Decoration */}
               <div className="w-24 h-24 bg-[#004AC6]/5 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 bg-[#2563EB] rounded-full flex items-center justify-center text-white font-bold text-xl shadow-xs group-hover:scale-105 transition-transform">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
+                    activeCardId === "card-1"
+                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
+                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
+                  }`}
+                >
                   1
                 </div>
                 <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
@@ -95,7 +89,7 @@ export default function FollowUpRecommendationsPage() {
 
               {/* Status Badge */}
               <div className="flex items-center gap-2 pt-1 text-[#006A61] text-sm font-bold">
-                <Calendar className="w-4 h-4 text-[#006A61] animate-pulse" />
+                <Calendar className="w-4 h-4 text-[#006A61]" />
                 <span>Dijadwalkan - 24 Juli 2026</span>
               </div>
 
@@ -105,14 +99,31 @@ export default function FollowUpRecommendationsPage() {
               </p>
             </div>
 
-            {/* Step Card 2: Konsultasi Tenaga Kesehatan (Pending Test Results) */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden space-y-2 animate-pop-in [animation-delay:150ms]">
+            {/* Step Card 2: Konsultasi Tenaga Kesehatan */}
+            <div
+              onClick={() => handleCardClick("card-2")}
+              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
+                activeCardId === "card-2"
+                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#BC4800]/5"
+                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
+              } ${
+                clickedAnimationCardId === "card-2"
+                  ? "scale-[0.98] transition-transform duration-200"
+                  : "hover:-translate-y-0.5"
+              }`}
+            >
               {/* Corner Curve Decoration */}
               <div className="w-24 h-24 bg-[#BC4800]/10 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 bg-[#E7E7F3] border border-[#C3C6D7] rounded-full flex items-center justify-center text-[#191B23] font-bold text-xl shadow-xs group-hover:scale-105 transition-transform">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
+                    activeCardId === "card-2"
+                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
+                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
+                  }`}
+                >
                   2
                 </div>
                 <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
@@ -137,14 +148,31 @@ export default function FollowUpRecommendationsPage() {
               </p>
             </div>
 
-            {/* Step Card 3: Pantau Kondisi (Ongoing Self Care) */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden space-y-2 animate-pop-in [animation-delay:300ms]">
+            {/* Step Card 3: Pantau Kondisi */}
+            <div
+              onClick={() => handleCardClick("card-3")}
+              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
+                activeCardId === "card-3"
+                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#86F2E4]/10"
+                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
+              } ${
+                clickedAnimationCardId === "card-3"
+                  ? "scale-[0.98] transition-transform duration-200"
+                  : "hover:-translate-y-0.5"
+              }`}
+            >
               {/* Corner Curve Decoration */}
               <div className="w-24 h-24 bg-[#86F2E4]/20 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 bg-[#E7E7F3] border border-[#C3C6D7] rounded-full flex items-center justify-center text-[#191B23] font-bold text-xl shadow-xs group-hover:scale-105 transition-transform">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
+                    activeCardId === "card-3"
+                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
+                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
+                  }`}
+                >
                   3
                 </div>
                 <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
@@ -196,7 +224,12 @@ export default function FollowUpRecommendationsPage() {
           <div className="space-y-4">
             
             {/* Health Card 1: Nutrisi Optimal */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4">
+            <div
+              onClick={() => handleCardClick("health-1")}
+              className={`group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4 cursor-pointer ${
+                clickedAnimationCardId === "health-1" ? "scale-[0.98]" : "hover:scale-[1.01]"
+              }`}
+            >
               <div className="w-12 h-12 bg-[#BC4800]/10 rounded-full flex items-center justify-center text-[#943700] flex-shrink-0 group-hover:scale-110 transition-transform">
                 <UtensilsCrossed className="w-5 h-5 text-[#943700]" />
               </div>
@@ -211,7 +244,12 @@ export default function FollowUpRecommendationsPage() {
             </div>
 
             {/* Health Card 2: Aktivitas Ringan */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4">
+            <div
+              onClick={() => handleCardClick("health-2")}
+              className={`group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4 cursor-pointer ${
+                clickedAnimationCardId === "health-2" ? "scale-[0.98]" : "hover:scale-[1.01]"
+              }`}
+            >
               <div className="w-12 h-12 bg-[#86F2E4]/20 rounded-full flex items-center justify-center text-[#006A61] flex-shrink-0 group-hover:scale-110 transition-transform">
                 <Footprints className="w-5 h-5 text-[#006A61]" />
               </div>
