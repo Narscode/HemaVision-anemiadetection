@@ -340,7 +340,7 @@ export default function ScreeningDetailInspectionPage() {
         <section className="pt-4 pb-6 border-t border-[#C3C6D7]/40 flex flex-col sm:flex-row items-center gap-3">
           <button
             type="button"
-            onClick={handleBackToResults}
+            onClick={() => router.push(ROUTES.PATIENT.HASIL_PENJELASAN)}
             className="w-full sm:flex-1 py-3.5 px-6 border-2 border-[#004AC6] bg-white text-[#004AC6] font-bold text-base rounded-xl hover:bg-[#004AC6]/10 active:scale-[0.98] transition-all cursor-pointer text-center shadow-xs"
           >
             Hasil Skrining

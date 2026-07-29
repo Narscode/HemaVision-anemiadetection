@@ -20,6 +20,7 @@ export const ROUTES = {
     HOME: "/pasien",
     HASIL: "/pasien/hasil",
     HASIL_DETAIL: "/pasien/hasil/detail",
+    HASIL_PENJELASAN: "/pasien/hasil/penjelasan",
     TINDAK_LANJUT: "/pasien/tindak-lanjut",
     RIWAYAT: "/pasien/riwayat",
     EDUKASI: "/pasien/edukasi",
