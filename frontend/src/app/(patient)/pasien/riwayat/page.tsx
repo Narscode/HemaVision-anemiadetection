@@ -14,6 +14,7 @@ import { ROUTES } from "@/lib/routes";
 
 export default function PatientHistoryPage() {
   const [chartAnimated, setChartAnimated] = useState(false);
+  const [animKey, setAnimKey] = useState(0);
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -22,13 +23,14 @@ export default function PatientHistoryPage() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setChartAnimated(true);
+          setAnimKey((prev) => prev + 1);
         } else {
           setChartAnimated(false);
         }
       },
       {
-        threshold: 0.25,
-        rootMargin: "0px 0px -50px 0px",
+        threshold: 0.2,
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
@@ -199,6 +201,7 @@ export default function PatientHistoryPage() {
             )}
 
             <svg
+              key={animKey}
               className="w-full h-full overflow-visible"
               viewBox="0 0 500 180"
               fill="none"
