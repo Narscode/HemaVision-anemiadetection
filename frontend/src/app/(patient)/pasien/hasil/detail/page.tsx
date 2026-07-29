@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowUpRight,
   CheckCircle2,
   Eye,
   Sparkles,
@@ -234,24 +235,12 @@ export default function ScreeningDetailInspectionPage() {
 
             <button
               type="button"
-              onClick={() => setShowExplanation(!showExplanation)}
-              className="w-full py-3 px-4 bg-white/20 hover:bg-white/30 border border-white/30 rounded-lg text-center font-bold text-white text-base transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              onClick={() => router.push(ROUTES.PATIENT.HASIL_PENJELASAN)}
+              className="w-full py-3 px-4 bg-white/20 hover:bg-white/30 active:scale-[0.98] border border-white/30 rounded-lg text-center font-bold text-white text-base transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
-              <span>{showExplanation ? "Tutup Penjelasan" : "Lihat Penjelasan Hasil"}</span>
-              {showExplanation ? <ChevronUp className="w-4 h-4 text-white" /> : <ChevronDown className="w-4 h-4 text-white" />}
+              <span>Lihat Penjelasan Hasil</span>
+              <ArrowUpRight className="w-5 h-5 text-white stroke-[2.5]" />
             </button>
-
-            {/* Inline Explanation Section */}
-            {showExplanation && (
-              <div className="p-4 bg-white/15 rounded-lg text-sm text-white/95 space-y-2 border border-white/20 animate-fade-in">
-                <p>
-                  Kategori <strong className="underline decoration-white font-bold">Risiko Anemia Sedang</strong> menunjukkan bahwa analisis citra mendeteksi rona warna konjungtiva dan kuku yang memerlukan konfirmasi medis laboratorium.
-                </p>
-                <p>
-                  Ini bukan diagnosis medis final. Sangat disarankan untuk mendatangi fasilitas kesehatan terdekat untuk melakukan tes darah lengkap (CBC).
-                </p>
-              </div>
-            )}
           </div>
         </section>
 
