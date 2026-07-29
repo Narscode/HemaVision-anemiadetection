@@ -43,13 +43,13 @@ export default function ScreeningImageQualityHelpPage() {
       </header>
 
       {/* Main Content Area */}
-      <div className="w-full max-w-[448px] mx-auto px-4 py-8 flex flex-col items-center space-y-8 animate-pop-in">
+      <div className="w-full max-w-[448px] mx-auto px-4 py-8 flex flex-col items-center space-y-8">
         
         {/* Top Hero Edge Case Icon & Description */}
         <div className="flex flex-col items-center text-center space-y-4">
           
           {/* Grey Circular Icon Badge */}
-          <div className="w-24 h-24 bg-[#E7E7F3] rounded-full border border-[#C3C6D7]/50 shadow-xs flex items-center justify-center text-[#737686] animate-pop-in">
+          <div className="w-24 h-24 bg-[#E7E7F3] rounded-full border border-[#C3C6D7]/50 shadow-xs flex items-center justify-center text-[#737686]">
             <ImageOff className="w-10 h-10 stroke-[1.8]" />
           </div>
 
@@ -66,7 +66,7 @@ export default function ScreeningImageQualityHelpPage() {
         </div>
 
         {/* Healthcare Worker Alternative Card */}
-        <div className="w-full bg-white rounded-xl border border-[#C3C6D7] p-6 shadow-sm hover:shadow-md transition-all duration-300 space-y-4 animate-pop-in [animation-delay:150ms]">
+        <div className="w-full bg-white rounded-xl border border-[#C3C6D7] p-6 shadow-sm hover:shadow-md transition-all duration-300 space-y-4">
           
           {/* Header Row */}
           <div className="flex items-center gap-3.5 pb-3 border-b border-[#C3C6D7]/40">

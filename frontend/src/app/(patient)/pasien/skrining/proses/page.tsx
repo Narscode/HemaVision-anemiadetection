@@ -74,7 +74,7 @@ export default function ScreeningAnalysisProcessingPage() {
       </header>
 
       {/* Main Analysis Processing Card */}
-      <div className="w-full max-w-[672px] mx-auto mt-16 bg-white rounded-2xl border border-[#C3C6D7] p-6 sm:p-10 shadow-md space-y-8 animate-pop-in relative overflow-hidden">
+      <div className="w-full max-w-[672px] mx-auto mt-16 bg-white rounded-2xl border border-[#C3C6D7] p-6 sm:p-10 shadow-md space-y-8 relative overflow-hidden">
         
         {/* Header Titles with Floating Text Motion */}
         <div className="text-center space-y-2">

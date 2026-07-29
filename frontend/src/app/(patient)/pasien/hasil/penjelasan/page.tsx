@@ -83,7 +83,7 @@ export default function ResultExplanationPage() {
       </header>
 
       {/* Main Container */}
-      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-6 animate-pop-in relative z-10">
+      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-6 relative z-10">
         
         {/* SUB-HEADER METADATA BAR */}
         <div className="flex items-center gap-2 text-[#434655] text-sm font-medium px-1">

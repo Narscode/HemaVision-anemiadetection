@@ -79,7 +79,7 @@ export default function ScreeningDetailInspectionPage() {
       </header>
 
       {/* Main Container */}
-      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 animate-pop-in relative z-10">
+      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 relative z-10">
         
         {/* Header Summary */}
         <div className="space-y-2">
