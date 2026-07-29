@@ -29,8 +29,8 @@ export default function PatientHistoryPage() {
         }
       },
       {
-        threshold: 0.2,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.1,
+        rootMargin: "0px 0px -20px 0px",
       }
     );
 
@@ -154,7 +154,7 @@ export default function PatientHistoryPage() {
         </div>
       </section>
 
-      {/* SECTION 2: TREN RISKO (LINE DRAWING MOTION TO THE RIGHT ALONG NAIK-TURUN CURVE) */}
+      {/* SECTION 2: TREN RISKO (REFINED SLEEK LINE DRAWING MOTION ON SCROLL DOWN) */}
       <section ref={chartRef} className="space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-[#004AC6]" />
@@ -199,7 +199,7 @@ export default function PatientHistoryPage() {
               <defs>
                 {/* Blue Gradient Fill under curve */}
                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="180">
-                  <stop offset="0%" stopColor="#004AC6" stopOpacity="0.25" />
+                  <stop offset="0%" stopColor="#004AC6" stopOpacity="0.22" />
                   <stop offset="100%" stopColor="#004AC6" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
@@ -209,14 +209,14 @@ export default function PatientHistoryPage() {
               <line x1="0" y1="80" x2="500" y2="80" stroke="#F1F3F9" strokeWidth="1" strokeDasharray="4 4" />
               <line x1="0" y1="130" x2="500" y2="130" stroke="#E1E2ED" strokeWidth="1" />
 
-              {/* Stationary SVG Group: Line Traces to the Right Following Naik-Turun Path */}
+              {/* Stationary SVG Group: Sleek Line Traces to the Right Following Naik-Turun Path */}
               <g>
 
                 {/* Dashed Secondary Light-Blue Baseline Curve Drawing to Right */}
                 <path
                   d="M 0 145 C 100 135, 200 155, 300 135 C 400 115, 450 135, 500 150"
                   stroke="#DBE1FF"
-                  strokeWidth="3"
+                  strokeWidth="2"
                   strokeDasharray="6 6"
                   fill="none"
                   className={chartAnimated ? "animate-line-draw-dashed" : "opacity-0"}
@@ -231,11 +231,11 @@ export default function PatientHistoryPage() {
                   }`}
                 />
 
-                {/* Primary Blue Line Tracing to the Right Along Naik-Turun Path */}
+                {/* Primary Blue Refined Sleek Line Tracing to the Right Along Naik-Turun Path */}
                 <path
                   d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110"
                   stroke="#004AC6"
-                  strokeWidth="4.5"
+                  strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   fill="none"
@@ -253,13 +253,13 @@ export default function PatientHistoryPage() {
                   <circle
                     cx="130"
                     cy="108"
-                    r="7"
+                    r="6"
                     fill="#004AC6"
                     stroke="#FFFFFF"
-                    strokeWidth="3"
+                    strokeWidth="2.5"
                     className="hover:scale-150 transition-transform"
                   />
-                  <circle cx="130" cy="108" r="12" fill="#004AC6" opacity="0.25" className="animate-ping" />
+                  <circle cx="130" cy="108" r="11" fill="#004AC6" opacity="0.25" className="animate-ping" />
                 </g>
 
                 {/* Glowing Data Point 2 (Jul) - Appears at 1600ms as line reaches X=365 */}
@@ -273,13 +273,13 @@ export default function PatientHistoryPage() {
                   <circle
                     cx="365"
                     cy="75"
-                    r="8"
+                    r="6.5"
                     fill="#004AC6"
                     stroke="#FFFFFF"
-                    strokeWidth="3"
+                    strokeWidth="2.5"
                     className="hover:scale-150 transition-transform"
                   />
-                  <circle cx="365" cy="75" r="14" fill="#004AC6" opacity="0.35" className="animate-ping" />
+                  <circle cx="365" cy="75" r="12" fill="#004AC6" opacity="0.35" className="animate-ping" />
                 </g>
 
               </g>
