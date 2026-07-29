@@ -1,254 +1,393 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
-  Calendar,
+  ArrowLeft,
+  CheckCircle2,
   Clock,
   Activity,
+  ChevronDown,
+  ChevronUp,
   FileText,
-  UtensilsCrossed,
-  Footprints,
-  Sparkles,
-  CheckCircle2,
-  HeartPulse,
-  Syringe,
+  Copy,
+  Check,
+  AlertOctagon,
+  HelpCircle,
+  Stethoscope,
+  SquareCheck,
+  Square,
+  FileEdit,
+  Info,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
-export default function FollowUpRecommendationsPage() {
+export default function ExaminationRecommendationPage() {
   const router = useRouter();
+  const [openWhy, setOpenWhy] = useState(false);
+  const [openAbout, setOpenAbout] = useState(false);
+  const [copiedSummary, setCopiedSummary] = useState(false);
 
-  const handleStartNewScreening = () => {
-    router.push(ROUTES.PATIENT.SKRINING_PERSIAPAN);
+  // Interactive Preparation Checklist State
+  const [checklist, setChecklist] = useState({
+    result: true,
+    symptoms: false,
+    history: false,
+    meds: false,
+  });
+
+  const toggleChecklist = (key: keyof typeof checklist) => {
+    setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleGoToDetail = () => {
-    router.push(ROUTES.PATIENT.HASIL_DETAIL);
+  const summaryText =
+    "PASIEN: BUDI SANTOSO (20/07/2026).\nHASIL HEMAVISION: RISIKO SEDANG\n(EST. HB 10.8 G/DL). GEJALA\nDILAPORKAN: KELELAHAN, PUSING,\nKESULITAN FOKUS. DATA BERDASARKAN\nANALISIS MULTI-MODALITAS AI\n(CONJUNCTIVA, PALMAR, NAILBED).\nMOHON EVALUASI KLINIS DAN\nKONFIRMASI LABORATORIUM.";
+
+  const handleCopySummary = () => {
+    navigator.clipboard.writeText(summaryText);
+    setCopiedSummary(true);
+    setTimeout(() => setCopiedSummary(false), 2000);
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-28 flex flex-col items-center justify-start select-none overflow-x-hidden">
+    <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-32 flex flex-col items-center justify-start select-none overflow-x-hidden relative">
       
-      {/* Main Content Area */}
-      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-10">
-        
-        {/* SECTION 1: LANGKAH DIREKOMENDASIKAN */}
-        <section className="space-y-4">
-          <h2 className="text-[#191B23] text-2xl font-bold tracking-tight">
-            Langkah Direkomendasikan
-          </h2>
+      {/* Top Ambient Glows */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#DBE1FF]/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-96 left-0 w-80 h-80 bg-[#86F2E4]/20 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="space-y-4">
-            
-            {/* Step Card 1: Pemeriksaan Hb Konfirmasi */}
-            <div
-              onClick={handleGoToDetail}
-              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#2563EB]/5"
-            >
-              {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#004AC6]/5 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#2563EB]/15 transition-colors duration-300" />
-
-              {/* Card Header Row */}
-              <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
-                  1
-                </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
-                  Klinis
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
-                Pemeriksaan Hb Konfirmasi
-              </h3>
-
-              {/* Status Badge */}
-              <div className="flex items-center gap-2 pt-1 text-[#006A61] text-sm font-bold">
-                <Calendar className="w-4 h-4 text-[#006A61] group-hover:animate-pulse" />
-                <span>Dijadwalkan - 24 Juli 2026</span>
-              </div>
-
-              {/* Body Description */}
-              <p className="text-[#434655] text-sm font-normal leading-relaxed pt-1">
-                Pemeriksaan darah lengkap lanjutan untuk memverifikasi tingkat hemoglobin.
-              </p>
-            </div>
-
-            {/* Step Card 2: Konsultasi Tenaga Kesehatan */}
-            <div
-              onClick={handleGoToDetail}
-              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#BC4800]/5"
-            >
-              {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#BC4800]/10 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#BC4800]/20 transition-colors duration-300" />
-
-              {/* Card Header Row */}
-              <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
-                  2
-                </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
-                  Konsultasi
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
-                Konsultasi Tenaga Kesehatan
-              </h3>
-
-              {/* Status Badge */}
-              <div className="flex items-center gap-2 pt-1 text-[#434655] text-sm font-medium">
-                <Clock className="w-4 h-4 text-[#434655]" />
-                <span>Menunggu hasil tes</span>
-              </div>
-
-              {/* Body Description */}
-              <p className="text-[#434655] text-sm font-normal leading-relaxed pt-1">
-                Jadwalkan pertemuan dengan ahli hematologi setelah hasil keluar.
-              </p>
-            </div>
-
-            {/* Step Card 3: Pantau Kondisi */}
-            <div
-              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#86F2E4]/10"
-            >
-              {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#86F2E4]/20 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#86F2E4]/30 transition-colors duration-300" />
-
-              {/* Card Header Row */}
-              <div className="flex items-center justify-between pb-2">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
-                  3
-                </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
-                  Mandiri
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
-                Pantau Kondisi
-              </h3>
-
-              {/* Status Badge */}
-              <div className="flex items-center gap-2 pt-1 text-[#434655] text-sm font-medium">
-                <Activity className="w-4 h-4 text-[#434655]" />
-                <span>Berkelanjutan</span>
-              </div>
-
-              {/* Body Description */}
-              <p className="text-[#434655] text-sm font-normal leading-relaxed pt-1">
-                Catat gejala pusing, lelah berlebih, atau sesak napas setiap hari.
-              </p>
-            </div>
-
-          </div>
-
-          {/* Action Button: Lihat Detail Pemeriksaan */}
-          <div className="pt-2 flex justify-center">
+      {/* Top Navbar Header */}
+      <header className="w-full bg-[#FAF8FF]/90 border-b border-[#C3C6D7] px-4 h-16 flex items-center justify-between sticky top-0 z-30 shadow-2xs backdrop-blur-md">
+        <div className="w-full max-w-[672px] mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={handleGoToDetail}
-              className="w-full sm:w-auto py-3.5 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.98] text-white font-bold text-sm rounded-lg shadow-md shadow-[#004AC6]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+              onClick={() => router.back()}
+              className="p-1.5 rounded-full text-[#434655] hover:text-[#191B23] hover:bg-[#E7E7F3]/70 transition-colors cursor-pointer flex items-center justify-center"
+              aria-label="Kembali"
             >
-              <FileText className="w-4 h-4 text-white" />
-              <span>Lihat Detail Pemeriksaan</span>
+              <ArrowLeft className="w-5 h-5 text-[#191B23]" />
             </button>
+            <h1 className="text-[#004AC6] text-xl sm:text-2xl font-bold tracking-tight">
+              Rekomendasi Pemeriksaan
+            </h1>
           </div>
-        </section>
 
-        {/* SECTION 2: MENJAGA KESEHATAN SEHARI-HARI */}
+          {/* Profile Avatar */}
+          <Link
+            href={ROUTES.PATIENT.PROFIL}
+            className="w-8 h-8 rounded-full overflow-hidden border border-[#C3C6D7] hover:opacity-90 transition-opacity flex-shrink-0"
+            aria-label="Profil Saya"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+              alt="Avatar Budi"
+              className="w-full h-full object-cover"
+            />
+          </Link>
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 relative z-10">
+        
+        {/* Subtitle */}
+        <p className="text-[#434655] text-base font-normal">
+          Langkah yang disarankan berdasarkan hasil skrining Anda
+        </p>
+
+        {/* CARD 1: 1. PEMERIKSAAN Hb KONFIRMASI */}
+        <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] hover:border-[#004AC6] p-6 shadow-xs hover:shadow-md transition-all duration-300 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#86F2E4] text-[#006F66] text-xs font-bold rounded-full shadow-2xs group-hover:bg-[#006F66] group-hover:text-white transition-colors">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Direkomendasikan</span>
+              </div>
+              <h2 className="text-[#004AC6] text-2xl font-bold leading-tight group-hover:translate-x-0.5 transition-transform">
+                1. PEMERIKSAAN Hb<br />KONFIRMASI
+              </h2>
+            </div>
+
+            {/* Medical Bag Icon */}
+            <div className="w-14 h-14 bg-[#2563EB]/10 rounded-xl flex items-center justify-center text-[#004AC6] flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Stethoscope className="w-7 h-7 text-[#004AC6]" />
+            </div>
+          </div>
+
+          {/* Accordion: Mengapa direkomendasikan? */}
+          <div className="border-t border-[#C3C6D7] pt-4">
+            <button
+              type="button"
+              onClick={() => setOpenWhy(!openWhy)}
+              className="w-full flex items-center justify-between font-normal text-[#191B23] text-base text-left hover:text-[#004AC6] transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-[#004AC6]" />
+                <span className="font-medium">Mengapa direkomendasikan?</span>
+              </div>
+              {openWhy ? <ChevronUp className="w-5 h-5 text-[#191B23]" /> : <ChevronDown className="w-5 h-5 text-[#191B23]" />}
+            </button>
+
+            {openWhy && (
+              <div className="pt-3 text-sm text-[#434655] space-y-2 bg-[#F3F3FE] p-4 rounded-lg mt-2 border border-[#C3C6D7]/40 animate-fade-in">
+                <p>
+                  Pemeriksaan laboratorium lanjutan disarankan untuk memastikan tingkat hemoglobin secara pasti dalam darah sebagai tindak lanjut atas temuan indikasi risiko sedang dari skrining ini.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* SECTION 2: TIMELINE "APA YANG MUNGKIN TERJADI SELANJUTNYA?" */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 text-[#191B23]">
-            <HeartPulse className="w-6 h-6 text-[#004AC6]" />
-            <h2 className="text-2xl font-bold tracking-tight">
-              Menjaga Kesehatan Sehari-hari
-            </h2>
+          <div className="flex items-center gap-2 text-[#434655] text-sm font-semibold uppercase tracking-wider">
+            <Activity className="w-4 h-4 text-[#004AC6] animate-pulse" />
+            <h2>APA YANG MUNGKIN TERJADI SELANJUTNYA?</h2>
           </div>
 
-          <div className="space-y-4">
-            
-            {/* Health Card 1: Nutrisi Optimal */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] hover:border-[#004AC6] p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-start gap-4 cursor-pointer">
-              <div className="w-12 h-12 bg-[#BC4800]/10 rounded-full flex items-center justify-center text-[#943700] flex-shrink-0 group-hover:scale-110 group-hover:bg-[#BC4800]/20 transition-all">
-                <UtensilsCrossed className="w-5 h-5 text-[#943700]" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-[#191B23] text-lg font-bold group-hover:text-[#004AC6] transition-colors">
-                  Nutrisi Optimal
-                </h3>
+          {/* Vertical Timeline Container */}
+          <div className="relative pl-8 space-y-4">
+            {/* Vertical Line */}
+            <div className="absolute left-[15px] top-3 bottom-3 w-0.5 bg-[#C3C6D7]" />
+
+            {/* Timeline Step 1: Diskusi */}
+            <div className="relative group">
+              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#004AC6] border-4 border-[#FAF8FF] shadow-xs animate-pulse" />
+              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-[#004AC6]/30 group-hover:border-[#004AC6] group-hover:shadow-md transition-all duration-300 space-y-1">
+                <h3 className="text-[#004AC6] font-bold text-base">Diskusi</h3>
                 <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Tingkatkan asupan makanan kaya zat besi seperti sayuran hijau gelap, daging tanpa lemak, dan kacang-kacangan. Padukan dengan vitamin C.
+                  Menunjukkan hasil skrining HemaVision kepada tenaga medis.
                 </p>
               </div>
             </div>
 
-            {/* Health Card 2: Aktivitas Ringan */}
-            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] hover:border-[#004AC6] p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-start gap-4 cursor-pointer">
-              <div className="w-12 h-12 bg-[#86F2E4]/20 rounded-full flex items-center justify-center text-[#006A61] flex-shrink-0 group-hover:scale-110 group-hover:bg-[#86F2E4]/40 transition-all">
-                <Footprints className="w-5 h-5 text-[#006A61]" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-[#191B23] text-lg font-bold group-hover:text-[#004AC6] transition-colors">
-                  Aktivitas Ringan
-                </h3>
+            {/* Timeline Step 2: Evaluasi */}
+            <div className="relative group">
+              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
+              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
+                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Evaluasi</h3>
                 <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Lakukan aktivitas fisik ringan seperti berjalan kaki 30 menit sehari. Hindari olahraga berat hingga hasil tes keluar.
+                  Dokter menanyakan gejala klinis dan riwayat kesehatan Anda.
                 </p>
               </div>
             </div>
 
+            {/* Timeline Step 3: Pemeriksaan */}
+            <div className="relative group">
+              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
+              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
+                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Pemeriksaan</h3>
+                <p className="text-[#434655] text-sm font-normal leading-relaxed">
+                  Pengambilan sampel darah untuk pemeriksaan laboratorium resmi.
+                </p>
+              </div>
+            </div>
+
+            {/* Timeline Step 4: Interpretasi */}
+            <div className="relative group">
+              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
+              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
+                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Interpretasi</h3>
+                <p className="text-[#434655] text-sm font-normal leading-relaxed">
+                  Membaca hasil laboratorium bersama tenaga kesehatan profesional.
+                </p>
+              </div>
+            </div>
+
+            {/* Timeline Step 5: Rencana */}
+            <div className="relative group">
+              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
+              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
+                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Rencana</h3>
+                <p className="text-[#434655] text-sm font-normal leading-relaxed">
+                  Pemberian saran nutrisi atau suplemen jika diperlukan.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* SECTION 3: SKRINING RISIKO ANEMIA PROMOTION CARD */}
-        <section className="pt-2">
-          <div className="w-full bg-[#2563EB] rounded-xl border border-[#C3C6D7] p-6 sm:p-8 shadow-md text-white space-y-6 relative overflow-hidden group">
-            {/* Background Ambient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent pointer-events-none" />
+        {/* CARD 3: KAPAN SEBAIKNYA DIPERIKSA? */}
+        <div className="w-full bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] p-5 shadow-xs space-y-2 hover:border-[#004AC6] transition-all group">
+          <div className="flex items-center gap-2 text-[#434655]">
+            <Clock className="w-5 h-5 text-[#004AC6] group-hover:animate-spin-slow" />
+            <h3 className="text-[#434655] font-semibold text-base">Kapan Sebaiknya Diperiksa?</h3>
+          </div>
+          <p className="text-[#191B23] text-base font-normal leading-relaxed">
+            Konsultasikan dengan tenaga kesehatan untuk menentukan waktu terbaik pemeriksaan.
+          </p>
+          <p className="text-[#434655] text-sm italic font-normal leading-relaxed pt-1">
+            Segera periksakan jika Anda merasa sangat lelah, pusing, atau sesak napas.
+          </p>
+        </div>
 
-            <div className="space-y-2 text-center sm:text-left relative z-10">
-              <h3 className="text-2xl font-semibold leading-snug">
-                Skrining Risiko Anemia
-              </h3>
-              <p className="text-white/90 text-base font-normal leading-relaxed max-w-lg">
-                Lakukan skrining awal risiko anemia melalui pengambilan citra mata, kuku/jari, dan telapak tangan.
+        {/* CARD 4: YANG PERLU DISIAPKAN (INTERACTIVE CHECKLIST) */}
+        <div className="w-full bg-[#E7E7F3] rounded-xl border border-[#C3C6D7] p-5 space-y-4 shadow-2xs">
+          <h3 className="text-[#191B23] font-bold text-base">Yang Perlu Disiapkan</h3>
+
+          <div className="space-y-3">
+            {/* Checklist Item 1 */}
+            <div
+              onClick={() => toggleChecklist("result")}
+              className="flex items-start gap-3 cursor-pointer group"
+            >
+              {checklist.result ? (
+                <SquareCheck className="w-5 h-5 text-[#004AC6] flex-shrink-0 mt-0.5" />
+              ) : (
+                <Square className="w-5 h-5 text-[#737686] flex-shrink-0 mt-0.5 group-hover:text-[#004AC6]" />
+              )}
+              <div className="space-y-0.5">
+                <span className={`text-base font-medium transition-colors ${checklist.result ? "text-[#191B23]" : "text-[#434655]"}`}>
+                  Hasil skrining HemaVision
+                </span>
+                <p className="text-[#434655] text-xs font-normal">
+                  Simpan tangkapan layar atau ID riwayat
+                </p>
+              </div>
+            </div>
+
+            {/* Checklist Item 2 */}
+            <div
+              onClick={() => toggleChecklist("symptoms")}
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              {checklist.symptoms ? (
+                <SquareCheck className="w-5 h-5 text-[#004AC6] flex-shrink-0" />
+              ) : (
+                <Square className="w-5 h-5 text-[#737686] flex-shrink-0 group-hover:text-[#004AC6]" />
+              )}
+              <span className={`text-base font-medium transition-colors ${checklist.symptoms ? "text-[#191B23]" : "text-[#434655]"}`}>
+                Daftar Gejala yang dirasakan
+              </span>
+            </div>
+
+            {/* Checklist Item 3 */}
+            <div
+              onClick={() => toggleChecklist("history")}
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              {checklist.history ? (
+                <SquareCheck className="w-5 h-5 text-[#004AC6] flex-shrink-0" />
+              ) : (
+                <Square className="w-5 h-5 text-[#737686] flex-shrink-0 group-hover:text-[#004AC6]" />
+              )}
+              <span className={`text-base font-medium transition-colors ${checklist.history ? "text-[#191B23]" : "text-[#434655]"}`}>
+                Riwayat kesehatan keluarga
+              </span>
+            </div>
+
+            {/* Checklist Item 4 */}
+            <div
+              onClick={() => toggleChecklist("meds")}
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              {checklist.meds ? (
+                <SquareCheck className="w-5 h-5 text-[#004AC6] flex-shrink-0" />
+              ) : (
+                <Square className="w-5 h-5 text-[#737686] flex-shrink-0 group-hover:text-[#004AC6]" />
+              )}
+              <span className={`text-base font-medium transition-colors ${checklist.meds ? "text-[#191B23]" : "text-[#434655]"}`}>
+                Daftar Obat/suplemen rutin
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* CARDS 5 & 6: ACTION GUIDANCE CARDS */}
+        <div className="space-y-3">
+          <div className="w-full bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] p-4 flex items-start gap-3 hover:border-[#004AC6] transition-all cursor-pointer group">
+            <FileEdit className="w-5 h-5 text-[#004AC6] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+            <div className="space-y-1">
+              <h4 className="text-[#191B23] font-semibold text-base group-hover:text-[#004AC6] transition-colors">
+                Catat Perubahan Gejala
+              </h4>
+              <p className="text-[#434655] text-xs font-normal leading-relaxed">
+                Perhatikan jika muncul pucat pada telapak tangan atau mata.
               </p>
             </div>
-
-            {/* 3 Feature Tags */}
-            <div className="space-y-2 text-sm font-medium text-white/90 relative z-10 flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 sm:gap-6">
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-white" />
-                <span>Sekitar 3–5 menit</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Syringe className="w-4 h-4 text-white" />
-                <span>Tanpa jarum</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-white" />
-                <span>Tanpa pengambilan darah</span>
-              </div>
-            </div>
-
-            {/* Action Button: Mulai Skrining */}
-            <div className="relative z-10 pt-2">
-              <button
-                type="button"
-                onClick={handleStartNewScreening}
-                className="w-full py-3.5 px-6 bg-[#FAF8FF] hover:bg-white active:scale-[0.98] text-[#004AC6] font-bold text-sm rounded-lg shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Mulai Skrining</span>
-                <Sparkles className="w-4 h-4 text-[#004AC6]" />
-              </button>
-            </div>
-
           </div>
-        </section>
+
+          <div className="w-full bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] p-4 flex items-start gap-3 hover:border-[#004AC6] transition-all cursor-pointer group">
+            <Info className="w-5 h-5 text-[#004AC6] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+            <div className="space-y-1">
+              <h4 className="text-[#191B23] font-semibold text-base group-hover:text-[#004AC6] transition-colors">
+                Siapkan Informasi Kesehatan
+              </h4>
+              <p className="text-[#434655] text-xs font-normal leading-relaxed">
+                Ketahui asupan harian zat besi dari makanan Anda.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CARD 7: RINGKASAN UNTUK TENAGA KESEHATAN (BLUE CARD) */}
+        <div className="w-full bg-[#004AC6] rounded-xl p-6 shadow-xl text-white space-y-4 relative overflow-hidden group">
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
+
+          <div className="flex items-center justify-between">
+            <h3 className="text-[#EEEFFF] font-semibold text-base">
+              Ringkasan untuk Tenaga Kesehatan
+            </h3>
+            <FileText className="w-5 h-5 text-[#EEEFFF]/80 group-hover:rotate-12 transition-transform" />
+          </div>
+
+          <div className="bg-white/10 rounded-lg p-4 font-mono text-xs sm:text-sm text-[#EEEFFF] leading-relaxed backdrop-blur-xs border border-white/20 select-all">
+            {summaryText}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleCopySummary}
+            className="w-full py-3.5 px-6 bg-[#EEEFFF] hover:bg-white active:scale-[0.98] text-[#004AC6] font-bold text-sm rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+          >
+            {copiedSummary ? (
+              <>
+                <Check className="w-4 h-4 text-[#006A61]" />
+                <span className="text-[#006A61]">Tersalin ke Clipboard!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4 text-[#004AC6]" />
+                <span>Salin Ringkasan</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* CARD 8: JIKA KONDISI MEMBURUK (EMERGENCY RED BOX) */}
+        <div className="w-full bg-[#FFDAD6] border border-[#BA1A1A] rounded-xl p-4 flex items-center gap-4 text-[#93000A] shadow-xs">
+          <div className="w-10 h-10 bg-[#BA1A1A] rounded-full flex items-center justify-center text-white animate-pulse flex-shrink-0 shadow-xs">
+            <AlertOctagon className="w-6 h-6 text-white" />
+          </div>
+          <div className="space-y-0.5">
+            <h4 className="font-bold text-base text-[#93000A]">Jika Kondisi Memburuk</h4>
+            <p className="text-sm font-normal text-[#93000A]/90">
+              Cari pertolongan medis segera di UGD terdekat.
+            </p>
+          </div>
+        </div>
+
+        {/* SECTION 9: ACCORDION TENTANG REKOMENDASI INI */}
+        <div className="w-full bg-[#F3F3FE] border border-[#C3C6D7] rounded-xl overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setOpenAbout(!openAbout)}
+            className="w-full p-4 flex items-center justify-between font-normal text-[#434655] text-base text-left hover:bg-[#E7E7F3] transition-colors cursor-pointer"
+          >
+            <span>Tentang Rekomendasi Ini</span>
+            {openAbout ? <ChevronUp className="w-5 h-5 text-[#434655]" /> : <ChevronDown className="w-5 h-5 text-[#434655]" />}
+          </button>
+
+          {openAbout && (
+            <div className="p-4 border-t border-[#C3C6D7] text-sm text-[#434655] space-y-2 bg-white animate-fade-in">
+              <p>
+                Rekomendasi ini disusun berdasarkan panduan penanganan awal risiko anemia dan dirancang untuk membantu komunikasi antara pasien dan tenaga medis secara efektif.
+              </p>
+            </div>
+          )}
+        </div>
 
       </div>
 

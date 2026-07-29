@@ -22,6 +22,7 @@ export default function PatientLayout({
     pathname.startsWith("/pasien/skrining/bantuan") ||
     pathname.startsWith("/pasien/hasil/detail") ||
     pathname.startsWith("/pasien/hasil/penjelasan") ||
+    pathname.startsWith("/pasien/tindak-lanjut") ||
     pathname.startsWith("/pasien/setup");
 
   if (isFullPage) {
