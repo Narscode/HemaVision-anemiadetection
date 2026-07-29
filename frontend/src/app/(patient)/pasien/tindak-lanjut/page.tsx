@@ -39,6 +39,8 @@ export default function ExaminationRecommendationPage() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setTimelineVisible(true);
+        } else {
+          setTimelineVisible(false);
         }
       },
       { threshold: 0.1 }

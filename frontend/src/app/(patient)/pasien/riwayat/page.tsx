@@ -22,11 +22,13 @@ export default function PatientHistoryPage() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setChartAnimated(true);
+        } else {
+          setChartAnimated(false);
         }
       },
       {
-        threshold: 0.35,
-        rootMargin: "0px 0px -80px 0px",
+        threshold: 0.25,
+        rootMargin: "0px 0px -50px 0px",
       }
     );
 
