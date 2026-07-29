@@ -20,17 +20,7 @@ import { ROUTES } from "@/lib/routes";
 
 export default function FollowUpRecommendationsPage() {
   const router = useRouter();
-  const [activeCardId, setActiveCardId] = useState<string>("card-1");
-  const [clickedAnimationCardId, setClickedAnimationCardId] = useState<string | null>(null);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-
-  const handleCardClick = (cardId: string) => {
-    setActiveCardId(cardId);
-    setClickedAnimationCardId(cardId);
-    setTimeout(() => {
-      setClickedAnimationCardId(null);
-    }, 400);
-  };
 
   const handleStartNewScreening = () => {
     router.push(ROUTES.PATIENT.SKRINING_PERSIAPAN);
@@ -52,44 +42,30 @@ export default function FollowUpRecommendationsPage() {
             
             {/* Step Card 1: Pemeriksaan Hb Konfirmasi */}
             <div
-              onClick={() => handleCardClick("card-1")}
-              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
-                activeCardId === "card-1"
-                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#2563EB]/5"
-                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
-              } ${
-                clickedAnimationCardId === "card-1"
-                  ? "scale-[0.98] transition-transform duration-200"
-                  : "hover:-translate-y-0.5"
-              }`}
+              onClick={() => setShowAppointmentModal(true)}
+              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#2563EB]/5"
             >
               {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#004AC6]/5 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
+              <div className="w-24 h-24 bg-[#004AC6]/5 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#2563EB]/15 transition-colors duration-300" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
-                    activeCardId === "card-1"
-                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
-                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
-                  }`}
-                >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
                   1
                 </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
+                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
                   Klinis
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug">
+              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
                 Pemeriksaan Hb Konfirmasi
               </h3>
 
               {/* Status Badge */}
               <div className="flex items-center gap-2 pt-1 text-[#006A61] text-sm font-bold">
-                <Calendar className="w-4 h-4 text-[#006A61]" />
+                <Calendar className="w-4 h-4 text-[#006A61] group-hover:animate-pulse" />
                 <span>Dijadwalkan - 24 Juli 2026</span>
               </div>
 
@@ -101,38 +77,24 @@ export default function FollowUpRecommendationsPage() {
 
             {/* Step Card 2: Konsultasi Tenaga Kesehatan */}
             <div
-              onClick={() => handleCardClick("card-2")}
-              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
-                activeCardId === "card-2"
-                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#BC4800]/5"
-                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
-              } ${
-                clickedAnimationCardId === "card-2"
-                  ? "scale-[0.98] transition-transform duration-200"
-                  : "hover:-translate-y-0.5"
-              }`}
+              onClick={() => setShowAppointmentModal(true)}
+              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#BC4800]/5"
             >
               {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#BC4800]/10 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
+              <div className="w-24 h-24 bg-[#BC4800]/10 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#BC4800]/20 transition-colors duration-300" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
-                    activeCardId === "card-2"
-                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
-                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
-                  }`}
-                >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
                   2
                 </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
+                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
                   Konsultasi
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug">
+              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
                 Konsultasi Tenaga Kesehatan
               </h3>
 
@@ -150,38 +112,23 @@ export default function FollowUpRecommendationsPage() {
 
             {/* Step Card 3: Pantau Kondisi */}
             <div
-              onClick={() => handleCardClick("card-3")}
-              className={`group w-full bg-white rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] ${
-                activeCardId === "card-3"
-                  ? "outline-[#2563EB] shadow-md bg-gradient-to-r from-white via-white to-[#86F2E4]/10"
-                  : "outline-[#C3C6D7] hover:outline-[#2563EB]/50"
-              } ${
-                clickedAnimationCardId === "card-3"
-                  ? "scale-[0.98] transition-transform duration-200"
-                  : "hover:-translate-y-0.5"
-              }`}
+              className="group w-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden space-y-2 cursor-pointer outline-1 outline-offset-[-1px] outline-[#C3C6D7] hover:outline-[#2563EB] hover:bg-gradient-to-r hover:from-white hover:to-[#86F2E4]/10"
             >
               {/* Corner Curve Decoration */}
-              <div className="w-24 h-24 bg-[#86F2E4]/20 rounded-bl-full absolute -top-4 -right-4 pointer-events-none" />
+              <div className="w-24 h-24 bg-[#86F2E4]/20 rounded-bl-full absolute -top-4 -right-4 pointer-events-none group-hover:bg-[#86F2E4]/30 transition-colors duration-300" />
 
               {/* Card Header Row */}
               <div className="flex items-center justify-between pb-2">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 ${
-                    activeCardId === "card-3"
-                      ? "bg-[#2563EB] text-[#EEEFFF] shadow-md scale-105"
-                      : "bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7]"
-                  }`}
-                >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-300 bg-[#E7E7F3] text-[#191B23] border border-[#C3C6D7] group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] group-hover:scale-110 group-hover:shadow-md">
                   3
                 </div>
-                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full">
+                <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-xs font-medium rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#004AC6] transition-colors">
                   Mandiri
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug">
+              <h3 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug group-hover:text-[#004AC6] transition-colors">
                 Pantau Kondisi
               </h3>
 
@@ -224,17 +171,12 @@ export default function FollowUpRecommendationsPage() {
           <div className="space-y-4">
             
             {/* Health Card 1: Nutrisi Optimal */}
-            <div
-              onClick={() => handleCardClick("health-1")}
-              className={`group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4 cursor-pointer ${
-                clickedAnimationCardId === "health-1" ? "scale-[0.98]" : "hover:scale-[1.01]"
-              }`}
-            >
-              <div className="w-12 h-12 bg-[#BC4800]/10 rounded-full flex items-center justify-center text-[#943700] flex-shrink-0 group-hover:scale-110 transition-transform">
+            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] hover:border-[#004AC6] p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-start gap-4 cursor-pointer">
+              <div className="w-12 h-12 bg-[#BC4800]/10 rounded-full flex items-center justify-center text-[#943700] flex-shrink-0 group-hover:scale-110 group-hover:bg-[#BC4800]/20 transition-all">
                 <UtensilsCrossed className="w-5 h-5 text-[#943700]" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-[#191B23] text-lg font-bold">
+                <h3 className="text-[#191B23] text-lg font-bold group-hover:text-[#004AC6] transition-colors">
                   Nutrisi Optimal
                 </h3>
                 <p className="text-[#434655] text-sm font-normal leading-relaxed">
@@ -244,17 +186,12 @@ export default function FollowUpRecommendationsPage() {
             </div>
 
             {/* Health Card 2: Aktivitas Ringan */}
-            <div
-              onClick={() => handleCardClick("health-2")}
-              className={`group w-full bg-white rounded-xl border border-[#C3C6D7] p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4 cursor-pointer ${
-                clickedAnimationCardId === "health-2" ? "scale-[0.98]" : "hover:scale-[1.01]"
-              }`}
-            >
-              <div className="w-12 h-12 bg-[#86F2E4]/20 rounded-full flex items-center justify-center text-[#006A61] flex-shrink-0 group-hover:scale-110 transition-transform">
+            <div className="group w-full bg-white rounded-xl border border-[#C3C6D7] hover:border-[#004AC6] p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-start gap-4 cursor-pointer">
+              <div className="w-12 h-12 bg-[#86F2E4]/20 rounded-full flex items-center justify-center text-[#006A61] flex-shrink-0 group-hover:scale-110 group-hover:bg-[#86F2E4]/40 transition-all">
                 <Footprints className="w-5 h-5 text-[#006A61]" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-[#191B23] text-lg font-bold">
+                <h3 className="text-[#191B23] text-lg font-bold group-hover:text-[#004AC6] transition-colors">
                   Aktivitas Ringan
                 </h3>
                 <p className="text-[#434655] text-sm font-normal leading-relaxed">
