@@ -44,8 +44,22 @@ export default function PatientHistoryPage() {
   return (
     <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 pb-32">
       
-      {/* Inline Styles for Custom Slow Draw & Floating Wave Motion */}
+      {/* Inline Styles for Custom Vertical Rise-Up & Wave Motion */}
       <style jsx global>{`
+        @keyframes graphRiseUpMotion {
+          0% {
+            transform: translateY(45px) scaleY(0.2);
+            opacity: 0;
+          }
+          65% {
+            transform: translateY(-4px) scaleY(1.05);
+            opacity: 0.95;
+          }
+          100% {
+            transform: translateY(0px) scaleY(1);
+            opacity: 1;
+          }
+        }
         @keyframes drawLineSlow {
           0% {
             stroke-dashoffset: 1000;
@@ -59,23 +73,25 @@ export default function PatientHistoryPage() {
             transform: translateY(0px);
           }
           50% {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
           }
+        }
+        .animate-graph-rise {
+          transform-origin: bottom center;
+          animation: graphRiseUpMotion 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .animate-slow-draw {
           stroke-dasharray: 1000;
-          animation: drawLineSlow 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          animation: drawLineSlow 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
         .animate-slow-draw-dashed {
           stroke-dasharray: 6 6;
-          animation: drawLineSlow 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          animation: drawLineSlow 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
         .animate-floating-wave {
-          animation: gentleWaveFloat 4s ease-in-out infinite;
+          animation: gentleWaveFloat 3.8s ease-in-out infinite 1.4s;
         }
       `}</style>
-
-
 
       {/* Notice Info Card */}
       <div className="w-full bg-[#F3F3FE] border border-[#C3C6D7] rounded-xl p-4 flex items-start gap-3.5 shadow-xs hover:shadow-md hover:border-[#004AC6]/40 transition-all duration-300 group">
@@ -165,7 +181,7 @@ export default function PatientHistoryPage() {
         </div>
       </section>
 
-      {/* SECTION 2: TREN RISKO (SLOWLY DRAWING & UP-DOWN FLOATING WAVE GRAPHIC) */}
+      {/* SECTION 2: TREN RISKO (VERTICAL RISE-UP & WAVE GRAPH MOTION) */}
       <section ref={chartRef} className="space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-[#004AC6]" />
@@ -220,10 +236,16 @@ export default function PatientHistoryPage() {
               <line x1="0" y1="80" x2="500" y2="80" stroke="#F1F3F9" strokeWidth="1" strokeDasharray="4 4" />
               <line x1="0" y1="130" x2="500" y2="130" stroke="#E1E2ED" strokeWidth="1" />
 
-              {/* Animated Floating Group containing both curve & data points */}
-              <g className={chartAnimated ? "animate-floating-wave" : ""}>
+              {/* Main Graph Group with Vertical Rise-Up & Wave Motion on Scroll */}
+              <g
+                className={
+                  chartAnimated
+                    ? "animate-graph-rise animate-floating-wave"
+                    : "opacity-0 translate-y-10 scale-y-50"
+                }
+              >
 
-                {/* Dashed Secondary Light-Blue Baseline Curve Slowly Drawing */}
+                {/* Dashed Secondary Light-Blue Baseline Curve */}
                 <path
                   d="M 0 145 C 100 135, 200 155, 300 135 C 400 115, 450 135, 500 150"
                   stroke="#DBE1FF"
@@ -236,12 +258,12 @@ export default function PatientHistoryPage() {
                 <path
                   d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110 L 500 180 L 0 180 Z"
                   fill="url(#chartGradient)"
-                  className={`transition-opacity duration-1000 delay-500 ${
+                  className={`transition-opacity duration-1000 delay-300 ${
                     chartAnimated ? "opacity-100" : "opacity-0"
                   }`}
                 />
 
-                {/* Primary Vibrant Blue Curved Wave Line Slowly Drawing To The Right */}
+                {/* Primary Vibrant Blue Curved Wave Line Rises Up & Draws Right */}
                 <path
                   d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110"
                   stroke="#004AC6"
@@ -252,11 +274,11 @@ export default function PatientHistoryPage() {
                   className={chartAnimated ? "animate-slow-draw" : "opacity-0"}
                 />
 
-                {/* Glowing Interactive Data Point 1 (Apr - Appears at ~1.2s of draw animation) */}
+                {/* Glowing Interactive Data Point 1 (Apr) */}
                 <g
                   onMouseEnter={() => setHoveredPoint(1)}
                   onMouseLeave={() => setHoveredPoint(null)}
-                  className={`cursor-pointer transition-all duration-700 delay-1000 ${
+                  className={`cursor-pointer transition-all duration-700 delay-700 ${
                     chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
                   }`}
                 >
@@ -272,11 +294,11 @@ export default function PatientHistoryPage() {
                   <circle cx="130" cy="108" r="12" fill="#004AC6" opacity="0.25" className="animate-ping" />
                 </g>
 
-                {/* Glowing Interactive Data Point 2 (Jul - Appears at ~2.4s of draw animation) */}
+                {/* Glowing Interactive Data Point 2 (Jul) */}
                 <g
                   onMouseEnter={() => setHoveredPoint(2)}
                   onMouseLeave={() => setHoveredPoint(null)}
-                  className={`cursor-pointer transition-all duration-700 delay-[2200ms] ${
+                  className={`cursor-pointer transition-all duration-700 delay-1000 ${
                     chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
                   }`}
                 >
