@@ -24,7 +24,7 @@ export default function PatientHistoryPage() {
           setChartAnimated(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
 
     if (chartRef.current) {
@@ -37,6 +37,37 @@ export default function PatientHistoryPage() {
   return (
     <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 pb-32">
       
+      {/* Inline Styles for Custom Slow Draw & Floating Wave Motion */}
+      <style jsx global>{`
+        @keyframes drawLineSlow {
+          0% {
+            stroke-dashoffset: 1000;
+          }
+          100% {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes gentleWaveFloat {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+        .animate-slow-draw {
+          stroke-dasharray: 1000;
+          animation: drawLineSlow 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .animate-slow-draw-dashed {
+          stroke-dasharray: 6 6;
+          animation: drawLineSlow 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .animate-floating-wave {
+          animation: gentleWaveFloat 4s ease-in-out infinite;
+        }
+      `}</style>
+
       {/* Page Title */}
       <div className="w-full text-center py-2 border-b border-[#C3C6D7]/40">
         <h1 className="text-[#004AC6] text-2xl font-bold tracking-tight">
@@ -132,7 +163,7 @@ export default function PatientHistoryPage() {
         </div>
       </section>
 
-      {/* SECTION 2: TREN RISIKO (ANIMATED CURVED GRAPHIC MATCHING IMAGE 2) */}
+      {/* SECTION 2: TREN RISKO (SLOWLY DRAWING & UP-DOWN FLOATING WAVE GRAPHIC) */}
       <section ref={chartRef} className="space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-[#004AC6]" />
@@ -141,28 +172,28 @@ export default function PatientHistoryPage() {
           </h2>
         </div>
 
-        {/* Chart Container */}
+        {/* Chart Container Card */}
         <div className="w-full bg-white rounded-xl border border-[#C3C6D7] p-6 shadow-xs space-y-4 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between border-b border-[#C3C6D7]/40 pb-3">
             <h3 className="text-[#191B23] text-lg font-semibold">
               Perubahan Hasil Skrining
             </h3>
             <span className="text-xs text-[#004AC6] font-semibold bg-[#004AC6]/10 px-2.5 py-1 rounded-full flex items-center gap-1">
-              <Activity className="w-3.5 h-3.5" /> Est. Hb (g/dL)
+              <Activity className="w-3.5 h-3.5 animate-pulse" /> Est. Hb (g/dL)
             </span>
           </div>
 
-          {/* SVG Smooth Curved Graph Canvas */}
+          {/* SVG Canvas Container */}
           <div className="relative w-full h-[220px] pt-4 select-none">
             
-            {/* Floating Tooltip */}
+            {/* Hover Tooltip Popover */}
             {hoveredPoint === 1 && (
-              <div className="absolute left-[20%] top-[25%] bg-[#191B23] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-20 animate-fade-in pointer-events-none transform -translate-x-1/2">
+              <div className="absolute left-[26%] top-[25%] bg-[#191B23] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-20 animate-fade-in pointer-events-none transform -translate-x-1/2">
                 05 Apr: 13.2 g/dL (Normal)
               </div>
             )}
             {hoveredPoint === 2 && (
-              <div className="absolute left-[70%] top-[10%] bg-[#BC4800] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-20 animate-fade-in pointer-events-none transform -translate-x-1/2">
+              <div className="absolute left-[73%] top-[10%] bg-[#BC4800] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-20 animate-fade-in pointer-events-none transform -translate-x-1/2">
                 20 Jul: 10.8 g/dL (Sedang)
               </div>
             )}
@@ -186,71 +217,78 @@ export default function PatientHistoryPage() {
               <line x1="0" y1="80" x2="500" y2="80" stroke="#F1F3F9" strokeWidth="1" strokeDasharray="4 4" />
               <line x1="0" y1="130" x2="500" y2="130" stroke="#E1E2ED" strokeWidth="1" />
 
-              {/* Dashed Secondary Light-Blue Baseline Curve (As in Image 2) */}
-              <path
-                d="M 0 145 C 100 135, 200 155, 300 135 C 400 115, 450 135, 500 150"
-                stroke="#DBE1FF"
-                strokeWidth="3"
-                strokeDasharray="6 6"
-                fill="none"
-              />
+              {/* Animated Floating Group containing both curve & data points */}
+              <g className={chartAnimated ? "animate-floating-wave" : ""}>
 
-              {/* Gradient Area Fill under primary curve */}
-              <path
-                d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110 L 500 180 L 0 180 Z"
-                fill="url(#chartGradient)"
-                className={`transition-opacity duration-1000 ${chartAnimated ? "opacity-100" : "opacity-0"}`}
-              />
-
-              {/* Primary Vibrant Blue Curved Wave Line (As in Image 2) */}
-              <path
-                d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110"
-                stroke="#004AC6"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                style={{
-                  strokeDasharray: 1000,
-                  strokeDashoffset: chartAnimated ? 0 : 1000,
-                  transition: "stroke-dashoffset 2s ease-in-out",
-                }}
-              />
-
-              {/* Glowing Interactive Data Point 1 (Apr) */}
-              <g
-                onMouseEnter={() => setHoveredPoint(1)}
-                onMouseLeave={() => setHoveredPoint(null)}
-                className="cursor-pointer group/dot"
-              >
-                <circle
-                  cx="130"
-                  cy="108"
-                  r="7"
-                  fill="#004AC6"
-                  stroke="#FFFFFF"
+                {/* Dashed Secondary Light-Blue Baseline Curve Slowly Drawing */}
+                <path
+                  d="M 0 145 C 100 135, 200 155, 300 135 C 400 115, 450 135, 500 150"
+                  stroke="#DBE1FF"
                   strokeWidth="3"
-                  className={`transition-all duration-500 hover:scale-150 ${chartAnimated ? "scale-100" : "scale-0"}`}
+                  fill="none"
+                  className={chartAnimated ? "animate-slow-draw-dashed" : "opacity-0"}
                 />
-                <circle cx="130" cy="108" r="12" fill="#004AC6" opacity="0.2" className="animate-ping" />
-              </g>
 
-              {/* Glowing Interactive Data Point 2 (Jul) */}
-              <g
-                onMouseEnter={() => setHoveredPoint(2)}
-                onMouseLeave={() => setHoveredPoint(null)}
-                className="cursor-pointer group/dot"
-              >
-                <circle
-                  cx="365"
-                  cy="75"
-                  r="8"
-                  fill="#004AC6"
-                  stroke="#FFFFFF"
-                  strokeWidth="3"
-                  className={`transition-all duration-500 hover:scale-150 ${chartAnimated ? "scale-100" : "scale-0"}`}
+                {/* Gradient Area Fill under primary curve */}
+                <path
+                  d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110 L 500 180 L 0 180 Z"
+                  fill="url(#chartGradient)"
+                  className={`transition-opacity duration-1000 delay-500 ${
+                    chartAnimated ? "opacity-100" : "opacity-0"
+                  }`}
                 />
-                <circle cx="365" cy="75" r="14" fill="#004AC6" opacity="0.3" className="animate-ping" />
+
+                {/* Primary Vibrant Blue Curved Wave Line Slowly Drawing To The Right */}
+                <path
+                  d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110"
+                  stroke="#004AC6"
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                  className={chartAnimated ? "animate-slow-draw" : "opacity-0"}
+                />
+
+                {/* Glowing Interactive Data Point 1 (Apr - Appears at ~1.2s of draw animation) */}
+                <g
+                  onMouseEnter={() => setHoveredPoint(1)}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                  className={`cursor-pointer transition-all duration-700 delay-1000 ${
+                    chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                  }`}
+                >
+                  <circle
+                    cx="130"
+                    cy="108"
+                    r="7"
+                    fill="#004AC6"
+                    stroke="#FFFFFF"
+                    strokeWidth="3"
+                    className="hover:scale-150 transition-transform"
+                  />
+                  <circle cx="130" cy="108" r="12" fill="#004AC6" opacity="0.25" className="animate-ping" />
+                </g>
+
+                {/* Glowing Interactive Data Point 2 (Jul - Appears at ~2.4s of draw animation) */}
+                <g
+                  onMouseEnter={() => setHoveredPoint(2)}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                  className={`cursor-pointer transition-all duration-700 delay-[2200ms] ${
+                    chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                  }`}
+                >
+                  <circle
+                    cx="365"
+                    cy="75"
+                    r="8"
+                    fill="#004AC6"
+                    stroke="#FFFFFF"
+                    strokeWidth="3"
+                    className="hover:scale-150 transition-transform"
+                  />
+                  <circle cx="365" cy="75" r="14" fill="#004AC6" opacity="0.35" className="animate-ping" />
+                </g>
+
               </g>
             </svg>
 
