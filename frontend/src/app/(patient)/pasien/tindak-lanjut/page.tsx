@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -29,6 +29,27 @@ export default function ExaminationRecommendationPage() {
   const [openAbout, setOpenAbout] = useState(false);
   const [copiedSummary, setCopiedSummary] = useState(false);
 
+  // Scroll Reveal Observer State for Timeline
+  const [timelineVisible, setTimelineVisible] = useState(false);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimelineVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (timelineRef.current) {
+      observer.observe(timelineRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   // Interactive Preparation Checklist State
   const [checklist, setChecklist] = useState({
     result: true,
@@ -49,6 +70,34 @@ export default function ExaminationRecommendationPage() {
     setCopiedSummary(true);
     setTimeout(() => setCopiedSummary(false), 2000);
   };
+
+  const timelineSteps = [
+    {
+      title: "Diskusi",
+      desc: "Menunjukkan hasil skrining HemaVision kepada tenaga medis.",
+      active: true,
+    },
+    {
+      title: "Evaluasi",
+      desc: "Dokter menanyakan gejala klinis dan riwayat kesehatan Anda.",
+      active: false,
+    },
+    {
+      title: "Pemeriksaan",
+      desc: "Pengambilan sampel darah untuk pemeriksaan laboratorium resmi.",
+      active: false,
+    },
+    {
+      title: "Interpretasi",
+      desc: "Membaca hasil laboratorium bersama tenaga kesehatan profesional.",
+      active: false,
+    },
+    {
+      title: "Rencana",
+      desc: "Pemberian saran nutrisi atau suplemen jika diperlukan.",
+      active: false,
+    },
+  ];
 
   return (
     <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-32 flex flex-col items-center justify-start select-none overflow-x-hidden relative">
@@ -140,8 +189,8 @@ export default function ExaminationRecommendationPage() {
           </div>
         </div>
 
-        {/* SECTION 2: TIMELINE "APA YANG MUNGKIN TERJADI SELANJUTNYA?" */}
-        <section className="space-y-4">
+        {/* SECTION 2: TIMELINE "APA YANG MUNGKIN TERJADI SELANJUTNYA?" WITH SCROLL REVEAL MOTION */}
+        <section ref={timelineRef} className="space-y-4">
           <div className="flex items-center gap-2 text-[#434655] text-sm font-semibold uppercase tracking-wider">
             <Activity className="w-4 h-4 text-[#004AC6] animate-pulse" />
             <h2>APA YANG MUNGKIN TERJADI SELANJUTNYA?</h2>
@@ -149,63 +198,54 @@ export default function ExaminationRecommendationPage() {
 
           {/* Vertical Timeline Container */}
           <div className="relative pl-8 space-y-4">
-            {/* Vertical Line */}
-            <div className="absolute left-[15px] top-3 bottom-3 w-0.5 bg-[#C3C6D7]" />
+            {/* Animated Vertical Connecting Line */}
+            <div
+              className={`absolute left-[15px] top-3 bottom-3 w-0.5 bg-[#C3C6D7] transition-all duration-1000 ${
+                timelineVisible ? "opacity-100" : "opacity-30"
+              }`}
+            />
 
-            {/* Timeline Step 1: Diskusi */}
-            <div className="relative group">
-              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#004AC6] border-4 border-[#FAF8FF] shadow-xs animate-pulse" />
-              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-[#004AC6]/30 group-hover:border-[#004AC6] group-hover:shadow-md transition-all duration-300 space-y-1">
-                <h3 className="text-[#004AC6] font-bold text-base">Diskusi</h3>
-                <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Menunjukkan hasil skrining HemaVision kepada tenaga medis.
-                </p>
-              </div>
-            </div>
+            {/* Staggered Timeline Items Appearing One-by-One on Scroll */}
+            {timelineSteps.map((step, idx) => (
+              <div
+                key={step.title}
+                style={{ transitionDelay: `${idx * 160}ms` }}
+                className={`relative group transition-all duration-700 ease-out ${
+                  timelineVisible
+                    ? "opacity-100 translate-y-0 translate-x-0"
+                    : "opacity-0 translate-y-6 -translate-x-3"
+                }`}
+              >
+                {/* Timeline Dot Node */}
+                <div
+                  className={`absolute -left-[25px] top-3 w-4 h-4 rounded-full border-4 border-[#FAF8FF] transition-all duration-500 ${
+                    step.active
+                      ? "bg-[#004AC6] shadow-xs animate-pulse scale-110"
+                      : "bg-[#C3C6D7] group-hover:bg-[#004AC6] group-hover:scale-110"
+                  }`}
+                />
 
-            {/* Timeline Step 2: Evaluasi */}
-            <div className="relative group">
-              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
-              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
-                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Evaluasi</h3>
-                <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Dokter menanyakan gejala klinis dan riwayat kesehatan Anda.
-                </p>
+                {/* Content Card */}
+                <div
+                  className={`bg-[#F3F3FE] rounded-xl p-4 transition-all duration-300 space-y-1 ${
+                    step.active
+                      ? "border border-[#004AC6]/40 shadow-xs"
+                      : "border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm"
+                  }`}
+                >
+                  <h3
+                    className={`font-bold text-base transition-colors ${
+                      step.active ? "text-[#004AC6]" : "text-[#191B23] group-hover:text-[#004AC6]"
+                    }`}
+                  >
+                    {step.title}
+                  </h3>
+                  <p className="text-[#434655] text-sm font-normal leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-
-            {/* Timeline Step 3: Pemeriksaan */}
-            <div className="relative group">
-              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
-              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
-                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Pemeriksaan</h3>
-                <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Pengambilan sampel darah untuk pemeriksaan laboratorium resmi.
-                </p>
-              </div>
-            </div>
-
-            {/* Timeline Step 4: Interpretasi */}
-            <div className="relative group">
-              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
-              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
-                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Interpretasi</h3>
-                <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Membaca hasil laboratorium bersama tenaga kesehatan profesional.
-                </p>
-              </div>
-            </div>
-
-            {/* Timeline Step 5: Rencana */}
-            <div className="relative group">
-              <div className="absolute -left-[25px] top-3 w-4 h-4 rounded-full bg-[#C3C6D7] border-4 border-[#FAF8FF] group-hover:bg-[#004AC6] transition-colors" />
-              <div className="bg-[#F3F3FE] rounded-xl p-4 border border-transparent group-hover:border-[#004AC6]/50 group-hover:shadow-sm transition-all duration-300 space-y-1">
-                <h3 className="text-[#191B23] font-bold text-base group-hover:text-[#004AC6] transition-colors">Rencana</h3>
-                <p className="text-[#434655] text-sm font-normal leading-relaxed">
-                  Pemberian saran nutrisi atau suplemen jika diperlukan.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
