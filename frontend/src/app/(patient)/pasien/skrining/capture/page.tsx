@@ -11,8 +11,7 @@ import {
   Info,
   RefreshCw,
   VideoOff,
-  Sun,
-  Focus,
+  MoreHorizontal,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
@@ -21,7 +20,7 @@ const STEPS = [
     id: 1,
     label: "Langkah 1 dari 3",
     subtitle: "Pengambilan Citra Mata",
-    instruction: "Posisikan mata di dalam panduan.",
+    instructionTitle: "Posisikan mata di dalam panduan.",
     subtext: "Pastikan kelopak mata bawah ditarik perlahan dan terlihat jelas.",
     shape: "eye",
     badges: [
@@ -34,7 +33,7 @@ const STEPS = [
     id: 2,
     label: "Langkah 2 dari 3",
     subtitle: "Pengambilan Citra Kuku",
-    instruction: "Posisikan kuku di dalam panduan.",
+    instructionTitle: "Posisikan kuku di dalam panduan.",
     subtext: "Pastikan cahaya cukup dan kuku terlihat jelas tanpa pantulan berlebih.",
     shape: "nail",
     badges: [
@@ -47,13 +46,13 @@ const STEPS = [
     id: 3,
     label: "Langkah 3 dari 3",
     subtitle: "Pengambilan Citra Telapak Tangan",
-    instruction: "Posisikan telapak tangan di dalam panduan.",
+    instructionTitle: "Buka telapak tangan dan posisikan di dalam panduan.",
     subtext: "Buka telapak tangan sepenuhnya dan pastikan pencahayaan rata.",
     shape: "palm",
     badges: [
-      { name: "Posisi", status: "ok" },
       { name: "Cahaya", status: "ok" },
       { name: "Fokus", status: "ok" },
+      { name: "Posisi", status: "pending" },
     ],
   },
 ];
@@ -154,7 +153,7 @@ export default function CameraCapturePage() {
     <main className="min-h-screen w-full bg-[#191B23] font-sans flex items-center justify-center select-none overflow-hidden">
       
       {/* Mobile App Container Frame */}
-      <div className="relative w-full max-w-[480px] h-screen max-h-[920px] bg-[#2E3039] flex flex-col justify-between overflow-hidden shadow-2xl border-x border-[#C3C6D7]/20">
+      <div className="relative w-full max-w-[480px] h-screen max-h-[920px] bg-[#FAF8FF] flex flex-col justify-between overflow-hidden shadow-2xl border-x border-[#C3C6D7]/20">
         
         {/* Shutter Flash Screen Effect */}
         {isFlashing && (
@@ -162,7 +161,7 @@ export default function CameraCapturePage() {
         )}
 
         {/* Real Live Camera Feed Background */}
-        <div className="absolute inset-0 z-0 bg-[#2E3039] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-[#D9D9E5] flex items-center justify-center overflow-hidden">
           
           {/* Always rendered real video element */}
           <video
@@ -197,57 +196,62 @@ export default function CameraCapturePage() {
             </div>
           )}
 
-          {/* Radial Dark Vignette Overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_105%_56%_at_50%_50%,rgba(25,27,35,0)_30%,rgba(25,27,35,0.80)_100%)] pointer-events-none" />
-
-          {/* Floating Instruction Toast Badge */}
-          <div className="absolute top-[18%] left-0 right-0 z-20 flex justify-center px-4">
-            <div className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full border border-[#C3C6D7]/40 shadow-md flex items-center gap-2">
-              <Info className="w-4 h-4 text-[#2563EB] flex-shrink-0" />
-              <span className="text-[#191B23] text-sm font-medium leading-5">
-                {currentStep.instruction}
-              </span>
-            </div>
-          </div>
-
           {/* Dynamic Viewfinder Reticle Target */}
-          <div className="absolute top-[42%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            {currentStep.shape === "nail" ? (
+          <div className="absolute top-[48%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            {currentStep.shape === "palm" ? (
+              /* Step 3: Telapak Tangan Palm Guide Box (Enlarged) */
+              <div className="w-[310px] sm:w-[320px] h-[390px] sm:h-[410px] rounded-2xl outline-4 outline-[#2563EB] outline-offset-[-4px] border-2 border-dashed border-[#2563EB] opacity-95 shadow-2xl relative overflow-hidden flex items-center justify-center bg-transparent">
+                {/* Center Reticle Crosshair Notch */}
+                <div className="w-5 h-5 absolute top-0 left-1/2 -translate-x-1/2 border-t-2 border-r-2 border-[#2563EB]" />
+                <div className="w-5 h-5 absolute bottom-0 left-1/2 -translate-x-1/2 border-b-2 border-l-2 border-[#2563EB]" />
+                {/* Vertical Motion Laser Scanning Line */}
+                <div className="absolute inset-x-0 h-0.5 bg-[#89F5E7] shadow-[0_0_12px_#89F5E7] animate-float-gentle pointer-events-none" />
+              </div>
+            ) : currentStep.shape === "nail" ? (
               /* Step 2: Kuku Vertical Arched Guide */
               <div className="w-[192px] h-[256px] rounded-t-[40px] rounded-b-[16px] border-2 border-white/70 shadow-2xl relative overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-x-0 h-0.5 bg-[#89F5E7] shadow-[0_0_10px_#89F5E7] animate-float-gentle pointer-events-none" />
               </div>
-            ) : currentStep.shape === "eye" ? (
+            ) : (
               /* Step 1: Mata Horizontal Guide */
               <div className="w-[256px] h-[128px] rounded-xl border-2 border-white/70 shadow-2xl relative overflow-hidden flex items-center justify-center">
                 <div className="w-2.5 h-2.5 bg-[#004AC6] rounded-full" />
                 <div className="absolute inset-x-0 h-0.5 bg-[#89F5E7] shadow-[0_0_10px_#89F5E7] animate-float-gentle pointer-events-none" />
               </div>
-            ) : (
-              /* Step 3: Telapak Tangan Guide */
-              <div className="w-[220px] h-[270px] rounded-[32px] border-2 border-white/70 shadow-2xl relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-x-0 h-0.5 bg-[#89F5E7] shadow-[0_0_10px_#89F5E7] animate-float-gentle pointer-events-none" />
-              </div>
             )}
           </div>
 
-          {/* 3 Floating Quality Badges Overlay near bottom of preview */}
-          <div className="absolute bottom-[24%] left-0 right-0 z-20 px-4 flex items-center justify-center gap-3">
+          {/* Floating Instruction Card Banner at Top */}
+          <div className="absolute top-[72px] left-0 right-0 z-20 px-4">
+            <div className="p-4 bg-[#FAF8FF]/90 backdrop-blur-md rounded-xl border border-[#C3C6D7] shadow-sm text-center space-y-1">
+              <p className="text-[#191B23] text-base font-normal">
+                {currentStep.label}
+              </p>
+              <h2 className="text-[#191B23] text-xl sm:text-2xl font-semibold leading-snug">
+                {currentStep.instructionTitle}
+              </h2>
+            </div>
+          </div>
+
+          {/* 3 Floating Quality Badges / Pills near Bottom */}
+          <div className="absolute bottom-[96px] left-0 right-0 z-20 px-4 flex items-center justify-center gap-2">
             {currentStep.badges.map((b) => (
               <div
                 key={b.name}
-                className={`px-3 py-2 bg-white/90 backdrop-blur-md rounded-lg shadow-xs flex flex-col items-center justify-center min-w-[100px] border ${
-                  b.status === "warning"
-                    ? "border-[#BA1A1A]/50 text-[#BA1A1A]"
-                    : "border-[#C3C6D7]/30 text-[#006A61]"
-                }`}
+                className="px-3 py-1.5 bg-[#FAF8FF]/80 backdrop-blur-md rounded-full border border-[#C3C6D7] shadow-xs flex items-center gap-1.5"
               >
-                {b.status === "warning" ? (
-                  <AlertTriangle className="w-5 h-5 text-[#BA1A1A]" />
+                {b.status === "ok" ? (
+                  <CheckCircle2 className="w-4 h-4 text-[#006A61]" />
+                ) : b.status === "warning" ? (
+                  <AlertTriangle className="w-4 h-4 text-[#BA1A1A]" />
                 ) : (
-                  <CheckCircle2 className="w-5 h-5 text-[#006A61]" />
+                  <MoreHorizontal className="w-4 h-4 text-[#737686]" />
                 )}
-                <span className="text-[#434655] font-mono text-xs font-normal mt-1">
+                <span
+                  className={`text-sm font-medium ${
+                    b.status === "pending" ? "text-[#434655]" : "text-[#191B23]"
+                  }`}
+                >
                   {b.name}
                 </span>
               </div>
@@ -257,54 +261,35 @@ export default function CameraCapturePage() {
         </div>
 
         {/* Top Header Glassmorphism Bar */}
-        <div className="relative z-20 w-full p-4 bg-white/20 backdrop-blur-md border-b border-white/30 flex items-center justify-between">
+        <div className="relative z-20 w-full h-[64px] px-4 bg-[#FAF8FF]/80 backdrop-blur-md border-b border-[#C3C6D7] flex items-center justify-between shadow-xs">
           
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className="w-10 h-10 bg-white/30 hover:bg-white/40 active:scale-95 backdrop-blur-md rounded-full flex items-center justify-center text-[#191B23] transition-all cursor-pointer"
+            className="p-2 rounded-full hover:bg-black/5 active:scale-95 text-[#004AC6] transition-all cursor-pointer"
             aria-label="Kembali"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-6 h-6 text-[#004AC6]" />
           </button>
 
-          {/* Step Title & Subtitle Stack */}
-          <div className="text-center space-y-0.5">
-            <h2 className="text-white text-sm font-semibold leading-tight">
-              {currentStep.label}
-            </h2>
-            <p className="text-white/80 font-mono text-xs font-medium leading-tight">
-              {currentStep.subtitle}
-            </p>
-          </div>
+          {/* Center Brand Title */}
+          <h1 className="text-[#004AC6] text-2xl font-bold font-sans tracking-tight">
+            HemaVision
+          </h1>
 
-          {/* Help Button */}
-          <button
-            onClick={() => router.push(ROUTES.PATIENT.SKRINING_PERSIAPAN)}
-            className="w-10 h-10 bg-white/30 hover:bg-white/40 active:scale-95 backdrop-blur-md rounded-full flex items-center justify-center text-[#191B23] transition-all cursor-pointer"
-            aria-label="Bantuan"
-          >
-            <HelpCircle className="w-5 h-5" />
-          </button>
+          {/* Empty spacer for centering balance */}
+          <div className="w-10" />
         </div>
 
-        {/* Bottom Sheet Modal Controls */}
-        <div className="relative z-20 w-full bg-white rounded-t-xl p-6 shadow-[0px_-4px_6px_-1px_rgba(0,0,0,0.05)] border-t border-[#C3C6D7] space-y-4">
-          
-          {/* Instruction Subtext */}
-          <p className="text-[#434655] text-sm font-normal text-center leading-relaxed max-w-sm mx-auto">
-            {currentStep.subtext}
-          </p>
-
-          {/* Shutter Capture Button */}
+        {/* Bottom Bar Capture Action Button */}
+        <div className="relative z-20 w-full p-4 bg-white/90 backdrop-blur-md border-t border-[#C3C6D7]">
           <button
             onClick={handleCapture}
-            className="w-full py-4 bg-[#2563EB] hover:bg-[#004AC6] active:scale-[0.98] text-white font-medium text-sm rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-4 bg-[#2563EB] hover:bg-[#004AC6] active:scale-[0.98] text-white font-medium text-lg rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Camera className="w-5 h-5 text-white" />
             <span>Ambil Gambar</span>
           </button>
-
         </div>
 
       </div>

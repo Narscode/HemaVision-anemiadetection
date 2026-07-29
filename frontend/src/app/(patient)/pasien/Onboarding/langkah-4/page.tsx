@@ -1,174 +1,169 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Pencil, CheckCircle2, ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Eye,
+  Hand,
+  Sparkles,
+  BarChart2,
+  Loader2,
+} from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
-export default function Step4ScreeningPage() {
-  const router = useRouter();
+const CAPTURED_IMAGES = [
+  {
+    id: "eye",
+    title: "Mata",
+    icon: Eye,
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
+    status: "Memenuhi standar",
+  },
+  {
+    id: "nail",
+    title: "Kuku",
+    icon: Sparkles,
+    image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80",
+    status: "Memenuhi standar",
+  },
+  {
+    id: "palm",
+    title: "Telapak Tangan",
+    icon: Hand,
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
+    status: "Memenuhi standar",
+  },
+];
 
-  const handleSaveAndFinish = () => {
-    router.push(ROUTES.PATIENT.ONBOARDING_SELESAI);
+export default function ImageAnalysisReadinessPage() {
+  const router = useRouter();
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const handleStartAnalysis = () => {
+    setIsAnalyzing(true);
+    // Simulate AI Hematology Analysis Processing
+    setTimeout(() => {
+      router.push(ROUTES.PATIENT.ONBOARDING_SELESAI);
+    }, 1500);
   };
 
   return (
-    <main className="min-h-screen w-full bg-gradient-to-b from-[#F3F3FE] to-[#FAF8FF] flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
-      <div className="w-full max-w-[640px] mx-auto space-y-6">
-
-        {/* Step Indicator Header (LANGKAH 4 DARI 4) */}
-        <div className="space-y-2 px-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[#004AC6] text-xs sm:text-sm font-semibold uppercase tracking-[0.35px]">
-              LANGKAH 4 DARI 4
-            </span>
-          </div>
-          {/* Progress Bar (100% filled with 4 active segments) */}
-          <div className="w-full h-2 bg-[#E1E2ED] rounded-full overflow-hidden flex">
-            <div className="w-1/4 h-full bg-[#004AC6] border-r border-white rounded-l-full transition-all duration-500" />
-            <div className="w-1/4 h-full bg-[#004AC6] border-r border-white transition-all duration-500" />
-            <div className="w-1/4 h-full bg-[#004AC6] border-r border-white transition-all duration-500" />
-            <div className="w-1/4 h-full bg-[#004AC6] rounded-r-full transition-all duration-500" />
-          </div>
+    <main className="min-h-screen w-full bg-gradient-to-b from-[#FAF8FF] to-[#FAF8FF] font-sans pb-24 select-none">
+      
+      {/* Top Header Navigation Bar */}
+      <header className="sticky top-0 z-30 w-full h-[64px] px-4 bg-[#FAF8FF]/90 backdrop-blur-md border-b border-[#C3C6D7] flex items-center justify-between shadow-xs">
+        <div className="flex items-center gap-4">
+          <Link
+            href={ROUTES.PATIENT.SKRINING_CAPTURE}
+            className="p-2 rounded-full hover:bg-black/5 active:scale-95 text-[#434655] transition-all cursor-pointer"
+            aria-label="Kembali"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <h1 className="text-[#004AC6] text-2xl font-bold font-sans tracking-tight">
+            HemaVision
+          </h1>
         </div>
 
-        {/* Main Review Card */}
-        <div className="w-full bg-[#FAF8FF] sm:bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.04)] border border-[#E1E2ED] p-6 sm:p-8 space-y-8">
+        {/* Profile Avatar Badge */}
+        <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C3C6D7] shadow-xs">
+          <img
+            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+            alt="Profil Pasien"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </header>
 
-          {/* Header Title Section */}
-          <div className="space-y-2 text-center">
-            <h1 className="text-[#191B23] text-2xl font-semibold leading-8">
-              Periksa Kembali Data Anda
-            </h1>
-            <p className="text-[#434655] text-base font-normal leading-6 max-w-md mx-auto">
-              Mohon periksa kembali informasi yang telah Anda masukkan sebelum menyimpan data skrining ini.
-            </p>
+      {/* Main Container */}
+      <div className="w-full max-w-[640px] mx-auto px-4 py-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        {/* Title & Description Header */}
+        <div className="space-y-2 text-center">
+          <h2 className="text-[#191B23] text-2xl sm:text-3xl font-semibold leading-tight">
+            Citra Siap Dianalisis
+          </h2>
+          <p className="text-[#434655] text-base sm:text-lg font-normal leading-relaxed max-w-md mx-auto">
+            Pastikan semua citra memenuhi standar sebelum memulai proses analisis hematologi.
+          </p>
+        </div>
+
+        {/* 3 Captured Images Cards */}
+        <div className="space-y-6">
+          {CAPTURED_IMAGES.map((item, idx) => {
+            const IconComponent = item.icon;
+            return (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl border border-[#C3C6D7] p-4 shadow-sm hover:shadow-md transition-all duration-300 space-y-4 group hover:border-[#004AC6]/40"
+                style={{ animationDelay: `${idx * 150}ms` }}
+              >
+                {/* Image Container with Dark Gradient Overlay & Label */}
+                <div className="relative w-full h-[220px] sm:h-[243px] rounded-lg overflow-hidden bg-[#E1E2ED] shadow-inner group-hover:scale-[1.01] transition-transform duration-300">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover filter brightness-95"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
+                    <div className="flex items-center gap-2 text-white font-medium text-sm drop-shadow-md">
+                      <IconComponent className="w-4 h-4 text-white" />
+                      <span>{item.title}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quality Standard Status Badge */}
+                <div className="flex items-center gap-2 text-[#006A61] font-medium text-sm">
+                  <CheckCircle2 className="w-5 h-5 text-[#006A61] animate-pulse" />
+                  <span>{item.status}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Readiness & Action Card */}
+        <div className="bg-white rounded-xl border border-[#C3C6D7] p-6 shadow-sm space-y-6 transition-all hover:shadow-md">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#86F2E4] flex items-center justify-center text-[#006F66] flex-shrink-0 shadow-xs">
+              <CheckCircle2 className="w-6 h-6 text-[#006F66]" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-[#191B23] text-xl font-semibold leading-snug">
+                Kesiapan Analisis
+              </h3>
+              <p className="text-[#434655] text-base font-normal leading-relaxed">
+                3 dari 3 citra memenuhi persyaratan kualitas.
+              </p>
+            </div>
           </div>
 
-          {/* Review Sections List */}
-          <div className="space-y-6">
-
-            {/* Section 1: DATA DIRI */}
-            <div className="p-6 bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] space-y-4">
-              <div className="pb-2 border-b border-[#C3C6D7] flex items-center justify-between">
-                <span className="text-[#004AC6] text-sm font-semibold uppercase tracking-[0.70px]">
-                  DATA DIRI
-                </span>
-                <Link
-                  href={ROUTES.PATIENT.SKRINING_LANGKAH1}
-                  className="flex items-center gap-1 text-[#004AC6] hover:underline text-sm font-medium transition-all"
-                >
-                  <Pencil className="w-3.5 h-3.5" />
-                  <span>Ubah</span>
-                </Link>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Nama Lengkap</span>
-                  <span className="block text-[#191B23] text-base font-normal">Budi Santoso</span>
-                </div>
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Tanggal Lahir</span>
-                  <span className="block text-[#191B23] text-base font-normal">15 Agustus 1985</span>
-                </div>
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Usia</span>
-                  <span className="block text-[#191B23] text-base font-normal">38 Tahun</span>
-                </div>
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Jenis Kelamin</span>
-                  <span className="block text-[#191B23] text-base font-normal">Laki-laki</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Section 2: INFORMASI KESEHATAN */}
-            <div className="p-6 bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] space-y-4">
-              <div className="pb-2 border-b border-[#C3C6D7] flex items-center justify-between">
-                <span className="text-[#004AC6] text-sm font-semibold uppercase tracking-[0.70px]">
-                  INFORMASI KESEHATAN
-                </span>
-                <Link
-                  href={ROUTES.PATIENT.SKRINING_LANGKAH2}
-                  className="flex items-center gap-1 text-[#004AC6] hover:underline text-sm font-medium transition-all"
-                >
-                  <Pencil className="w-3.5 h-3.5" />
-                  <span>Ubah</span>
-                </Link>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Riwayat Anemia dalam Keluarga</span>
-                  <span className="block text-[#191B23] text-base font-normal">Tidak ada riwayat keluarga yang diketahui.</span>
-                </div>
-                <div>
-                  <span className="block text-[#434655] text-xs sm:text-sm font-medium">Kondisi Medis Penyerta</span>
-                  <span className="block text-[#191B23] text-base font-normal">Hipertensi (Terkontrol)</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Section 3: GEJALA SAAT INI */}
-            <div className="p-6 bg-[#FAF8FF] rounded-xl border border-[#C3C6D7] space-y-4">
-              <div className="pb-2 border-b border-[#C3C6D7] flex items-center justify-between">
-                <span className="text-[#004AC6] text-sm font-semibold uppercase tracking-[0.70px]">
-                  GEJALA SAAT INI
-                </span>
-                <Link
-                  href={ROUTES.PATIENT.SKRINING_LANGKAH3}
-                  className="flex items-center gap-1 text-[#004AC6] hover:underline text-sm font-medium transition-all"
-                >
-                  <Pencil className="w-3.5 h-3.5" />
-                  <span>Ubah</span>
-                </Link>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-3 py-1 bg-[#FFDAD6] text-[#93000A] text-sm font-medium rounded-full">
-                    Mudah Lelah
-                  </span>
-                  <span className="px-3 py-1 bg-[#FFDAD6] text-[#93000A] text-sm font-medium rounded-full">
-                    Pusing
-                  </span>
-                  <span className="px-3 py-1 bg-[#E1E2ED] text-[#434655] text-sm font-medium rounded-full">
-                    Pucat
-                  </span>
-                </div>
-                <p className="text-[#434655] text-sm font-normal pt-1">
-                  Durasi gejala: Kurang lebih 2 minggu terakhir.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Action Footer Buttons (Stacked vertically as in design mockup) */}
-          <div className="pt-4 border-t border-[#C3C6D7] space-y-3">
-            <button
-              type="button"
-              onClick={handleSaveAndFinish}
-              className="w-full py-3.5 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.99] text-white font-semibold text-sm rounded-lg shadow-sm transition-all cursor-pointer text-center flex items-center justify-center gap-2"
-            >
-              <span>Simpan & Selesaikan</span>
-              <CheckCircle2 className="w-4 h-4" />
-            </button>
-
-            <Link
-              href={ROUTES.PATIENT.SKRINING_LANGKAH3}
-              className="w-full py-3 px-6 bg-white border border-[#C3C6D7] hover:bg-[#FAF8FF] text-[#004AC6] font-semibold text-sm rounded-lg transition-all text-center cursor-pointer flex items-center justify-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Kembali</span>
-            </Link>
-          </div>
-
+          {/* Primary Action Button */}
+          <button
+            onClick={handleStartAnalysis}
+            disabled={isAnalyzing}
+            className="w-full py-3.5 px-6 bg-[#2563EB] hover:bg-[#004AC6] active:scale-[0.98] text-white font-medium text-base rounded-xl shadow-md hover:shadow-lg hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+          >
+            {isAnalyzing ? (
+              <>
+                <Loader2 className="w-5 h-5 text-white animate-spin" />
+                <span>Memproses Analisis...</span>
+              </>
+            ) : (
+              <>
+                <BarChart2 className="w-5 h-5 text-white" />
+                <span>Mulai Analisis</span>
+              </>
+            )}
+          </button>
         </div>
 
       </div>
+
     </main>
   );
 }
