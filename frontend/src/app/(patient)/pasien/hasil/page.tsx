@@ -78,7 +78,7 @@ export default function PatientScreeningResultOverviewPage() {
           {/* Button 2: Lihat Detail Hasil */}
           <button
             type="button"
-            onClick={() => setShowDetailModal(true)}
+            onClick={() => router.push(ROUTES.PATIENT.HASIL_DETAIL)}
             className="w-full py-3.5 px-6 bg-transparent hover:bg-white/80 active:scale-[0.99] border border-[#C3C6D7] text-[#004AC6] font-bold text-sm sm:text-base rounded-xl shadow-2xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
           >
             <span>Lihat Detail Hasil</span>

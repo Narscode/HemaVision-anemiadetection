@@ -19,6 +19,7 @@ export const ROUTES = {
   PATIENT: {
     HOME: "/pasien",
     HASIL: "/pasien/hasil",
+    HASIL_DETAIL: "/pasien/hasil/detail",
     TINDAK_LANJUT: "/pasien/tindak-lanjut",
     RIWAYAT: "/pasien/riwayat",
     EDUKASI: "/pasien/edukasi",
