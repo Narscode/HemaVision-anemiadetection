@@ -24,7 +24,10 @@ export default function PatientHistoryPage() {
           setChartAnimated(true);
         }
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.35,
+        rootMargin: "0px 0px -80px 0px",
+      }
     );
 
     if (chartRef.current) {
