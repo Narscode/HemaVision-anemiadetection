@@ -44,23 +44,9 @@ export default function PatientHistoryPage() {
   return (
     <div className="w-full max-w-[672px] mx-auto px-4 py-6 space-y-8 pb-32">
       
-      {/* Inline Styles for Custom Vertical Rise-Up & Wave Motion */}
+      {/* Inline Styles for Line Tracing Motion to the Right */}
       <style jsx global>{`
-        @keyframes graphRiseUpMotion {
-          0% {
-            transform: translateY(45px) scaleY(0.2);
-            opacity: 0;
-          }
-          65% {
-            transform: translateY(-4px) scaleY(1.05);
-            opacity: 0.95;
-          }
-          100% {
-            transform: translateY(0px) scaleY(1);
-            opacity: 1;
-          }
-        }
-        @keyframes drawLineSlow {
+        @keyframes drawLineToRight {
           0% {
             stroke-dashoffset: 1000;
           }
@@ -68,28 +54,15 @@ export default function PatientHistoryPage() {
             stroke-dashoffset: 0;
           }
         }
-        @keyframes gentleWaveFloat {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-6px);
-          }
-        }
-        .animate-graph-rise {
-          transform-origin: bottom center;
-          animation: graphRiseUpMotion 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .animate-slow-draw {
+        .animate-line-draw {
           stroke-dasharray: 1000;
-          animation: drawLineSlow 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          stroke-dashoffset: 1000;
+          animation: drawLineToRight 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        .animate-slow-draw-dashed {
-          stroke-dasharray: 6 6;
-          animation: drawLineSlow 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        .animate-floating-wave {
-          animation: gentleWaveFloat 3.8s ease-in-out infinite 1.4s;
+        .animate-line-draw-dashed {
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: drawLineToRight 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
       `}</style>
 
@@ -181,7 +154,7 @@ export default function PatientHistoryPage() {
         </div>
       </section>
 
-      {/* SECTION 2: TREN RISKO (VERTICAL RISE-UP & WAVE GRAPH MOTION) */}
+      {/* SECTION 2: TREN RISKO (LINE DRAWING MOTION TO THE RIGHT ALONG NAIK-TURUN CURVE) */}
       <section ref={chartRef} className="space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-[#004AC6]" />
@@ -236,34 +209,29 @@ export default function PatientHistoryPage() {
               <line x1="0" y1="80" x2="500" y2="80" stroke="#F1F3F9" strokeWidth="1" strokeDasharray="4 4" />
               <line x1="0" y1="130" x2="500" y2="130" stroke="#E1E2ED" strokeWidth="1" />
 
-              {/* Main Graph Group with Vertical Rise-Up & Wave Motion on Scroll */}
-              <g
-                className={
-                  chartAnimated
-                    ? "animate-graph-rise animate-floating-wave"
-                    : "opacity-0 translate-y-10 scale-y-50"
-                }
-              >
+              {/* Stationary SVG Group: Line Traces to the Right Following Naik-Turun Path */}
+              <g>
 
-                {/* Dashed Secondary Light-Blue Baseline Curve */}
+                {/* Dashed Secondary Light-Blue Baseline Curve Drawing to Right */}
                 <path
                   d="M 0 145 C 100 135, 200 155, 300 135 C 400 115, 450 135, 500 150"
                   stroke="#DBE1FF"
                   strokeWidth="3"
+                  strokeDasharray="6 6"
                   fill="none"
-                  className={chartAnimated ? "animate-slow-draw-dashed" : "opacity-0"}
+                  className={chartAnimated ? "animate-line-draw-dashed" : "opacity-0"}
                 />
 
-                {/* Gradient Area Fill under primary curve */}
+                {/* Gradient Area Fill under primary curve - Fades in as line finishes drawing */}
                 <path
                   d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110 L 500 180 L 0 180 Z"
                   fill="url(#chartGradient)"
-                  className={`transition-opacity duration-1000 delay-300 ${
+                  className={`transition-opacity duration-1000 delay-700 ${
                     chartAnimated ? "opacity-100" : "opacity-0"
                   }`}
                 />
 
-                {/* Primary Vibrant Blue Curved Wave Line Rises Up & Draws Right */}
+                {/* Primary Blue Line Tracing to the Right Along Naik-Turun Path */}
                 <path
                   d="M 0 130 C 120 100, 200 150, 280 130 C 360 65, 440 55, 500 110"
                   stroke="#004AC6"
@@ -271,14 +239,14 @@ export default function PatientHistoryPage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   fill="none"
-                  className={chartAnimated ? "animate-slow-draw" : "opacity-0"}
+                  className={chartAnimated ? "animate-line-draw" : "opacity-0"}
                 />
 
-                {/* Glowing Interactive Data Point 1 (Apr) */}
+                {/* Glowing Data Point 1 (Apr) - Appears at 600ms as line reaches X=130 */}
                 <g
                   onMouseEnter={() => setHoveredPoint(1)}
                   onMouseLeave={() => setHoveredPoint(null)}
-                  className={`cursor-pointer transition-all duration-700 delay-700 ${
+                  className={`cursor-pointer transition-all duration-500 delay-[600ms] ${
                     chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
                   }`}
                 >
@@ -294,11 +262,11 @@ export default function PatientHistoryPage() {
                   <circle cx="130" cy="108" r="12" fill="#004AC6" opacity="0.25" className="animate-ping" />
                 </g>
 
-                {/* Glowing Interactive Data Point 2 (Jul) */}
+                {/* Glowing Data Point 2 (Jul) - Appears at 1600ms as line reaches X=365 */}
                 <g
                   onMouseEnter={() => setHoveredPoint(2)}
                   onMouseLeave={() => setHoveredPoint(null)}
-                  className={`cursor-pointer transition-all duration-700 delay-1000 ${
+                  className={`cursor-pointer transition-all duration-500 delay-[1600ms] ${
                     chartAnimated ? "opacity-100 scale-100" : "opacity-0 scale-0"
                   }`}
                 >
