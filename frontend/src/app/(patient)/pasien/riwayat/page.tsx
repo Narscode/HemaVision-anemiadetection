@@ -73,12 +73,7 @@ export default function PatientHistoryPage() {
         }
       `}</style>
 
-      {/* Page Title */}
-      <div className="w-full text-center py-2 border-b border-[#C3C6D7]/40">
-        <h1 className="text-[#004AC6] text-2xl font-bold tracking-tight">
-          Riwayat Skrining
-        </h1>
-      </div>
+
 
       {/* Notice Info Card */}
       <div className="w-full bg-[#F3F3FE] border border-[#C3C6D7] rounded-xl p-4 flex items-start gap-3.5 shadow-xs hover:shadow-md hover:border-[#004AC6]/40 transition-all duration-300 group">
