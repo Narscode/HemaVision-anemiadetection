@@ -150,7 +150,7 @@ export default function FollowUpRecommendationsPage() {
           <div className="pt-2 flex justify-center">
             <button
               type="button"
-              onClick={() => setShowAppointmentModal(true)}
+              onClick={() => router.push(ROUTES.PATIENT.HASIL_DETAIL)}
               className="w-full sm:w-auto py-3.5 px-6 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.98] text-white font-bold text-sm rounded-lg shadow-md shadow-[#004AC6]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <FileText className="w-4 h-4 text-white" />
