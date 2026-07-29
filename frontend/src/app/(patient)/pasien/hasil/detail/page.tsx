@@ -39,7 +39,7 @@ export default function ScreeningDetailInspectionPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-32 flex flex-col items-center justify-start select-none overflow-x-hidden relative">
+    <main className="min-h-screen w-full bg-[#FAF8FF] font-sans pb-16 flex flex-col items-center justify-start select-none overflow-x-hidden relative">
       
       {/* Top Background Radial Ambient Glows */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#DBE1FF]/30 rounded-full blur-3xl pointer-events-none" />
@@ -336,15 +336,12 @@ export default function ScreeningDetailInspectionPage() {
           </div>
         </section>
 
-      </div>
-
-      {/* Floating Bottom Action Bar */}
-      <footer className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#C3C6D7] p-4 z-40 flex items-center justify-center shadow-lg">
-        <div className="w-full max-w-[672px] mx-auto flex items-center gap-3">
+        {/* SECTION 6: ACTION BUTTONS IN-FLOW AT BOTTOM */}
+        <section className="pt-4 pb-6 border-t border-[#C3C6D7]/40 flex flex-col sm:flex-row items-center gap-3">
           <button
             type="button"
             onClick={handleBackToResults}
-            className="flex-1 py-3 px-6 border-2 border-[#004AC6] text-[#004AC6] font-bold text-base rounded-xl hover:bg-[#004AC6]/10 active:scale-[0.98] transition-all cursor-pointer text-center"
+            className="w-full sm:flex-1 py-3.5 px-6 border-2 border-[#004AC6] bg-white text-[#004AC6] font-bold text-base rounded-xl hover:bg-[#004AC6]/10 active:scale-[0.98] transition-all cursor-pointer text-center shadow-xs"
           >
             Hasil Skrining
           </button>
@@ -352,12 +349,13 @@ export default function ScreeningDetailInspectionPage() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="flex-1 py-3 px-6 bg-transparent text-[#434655] font-bold text-base rounded-xl hover:bg-gray-100 active:scale-[0.98] transition-all cursor-pointer text-center"
+            className="w-full sm:flex-1 py-3.5 px-6 bg-[#E1E2ED] text-[#434655] hover:bg-[#C3C6D7] font-bold text-base rounded-xl active:scale-[0.98] transition-all cursor-pointer text-center"
           >
             Kembali
           </button>
-        </div>
-      </footer>
+        </section>
+
+      </div>
 
     </main>
   );
