@@ -116,7 +116,7 @@ export default function EducationDetailPage() {
                   Saat Hb Rendah
                 </h3>
                 <p className="text-[#434655] text-base font-normal leading-relaxed">
-                  Jika kadar Hb rendah, organ-organ tubuh kekurangan suplai oksigen yang bertindak sebagai "bahan bakar" utama mereka.
+                  Jika kadar Hb rendah, organ-organ tubuh kekurangan suplai oksigen yang bertindak sebagai &quot;bahan bakar&quot; utama mereka.
                 </p>
               </div>
             </div>
