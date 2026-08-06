@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
@@ -9,8 +9,26 @@ export default function Step1ScreeningPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const [gender, setGender] = useState<"male" | "female">("male");
+  const [gender, setGender] = useState<"male" | "female">("female");
   const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const savedName = localStorage.getItem("hemavision_patient_name");
+        const savedPhone = localStorage.getItem("hemavision_patient_phone");
+        const savedBirth = localStorage.getItem("hemavision_patient_birthdate");
+        const savedGender = localStorage.getItem("hemavision_patient_gender") as "male" | "female" | null;
+
+        if (savedName) setFullName(savedName);
+        if (savedPhone) setPhone(savedPhone.replace(/^\+62/, ""));
+        if (savedBirth) setBirthDate(savedBirth);
+        if (savedGender) setGender(savedGender);
+      }
+    } catch {
+      // fallback
+    }
+  }, []);
 
   const calculateAge = (dateString: string) => {
     if (!dateString) return "";
@@ -21,13 +39,25 @@ export default function Step1ScreeningPage() {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
       age--;
     }
-    return age > 0 ? `${age} Tahun` : "";
+    return age > 0 ? `${age} Tahun` : "0 Tahun";
   };
 
   const computedAge = calculateAge(birthDate);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hemavision_patient_name", fullName || "Pasien HemaVision");
+        localStorage.setItem("hemavision_patient_birthdate", birthDate);
+        localStorage.setItem("hemavision_patient_age", computedAge);
+        localStorage.setItem("hemavision_patient_gender", gender);
+        localStorage.setItem("hemavision_patient_phone", phone ? `+62${phone}` : "");
+        localStorage.setItem("hemavision_onboarding_step", "1");
+      }
+    } catch {
+      // fallback
+    }
     router.push(ROUTES.PATIENT.SKRINING_LANGKAH2);
   };
 
@@ -119,7 +149,7 @@ export default function Step1ScreeningPage() {
                 <button
                   type="button"
                   onClick={() => setGender("male")}
-                  className={`flex-1 py-2 rounded-md text-center text-sm transition-all ${
+                  className={`flex-1 py-2 rounded-md text-center text-sm transition-all cursor-pointer ${
                     gender === "male"
                       ? "bg-white text-[#004AC6] font-bold shadow-xs border border-[#C3C6D7]/30"
                       : "text-[#434655] font-medium hover:text-[#191B23]"
@@ -130,7 +160,7 @@ export default function Step1ScreeningPage() {
                 <button
                   type="button"
                   onClick={() => setGender("female")}
-                  className={`flex-1 py-2 rounded-md text-center text-sm transition-all ${
+                  className={`flex-1 py-2 rounded-md text-center text-sm transition-all cursor-pointer ${
                     gender === "female"
                       ? "bg-white text-[#004AC6] font-bold shadow-xs border border-[#C3C6D7]/30"
                       : "text-[#434655] font-medium hover:text-[#191B23]"
@@ -167,7 +197,7 @@ export default function Step1ScreeningPage() {
                 type="submit"
                 className="w-full py-3.5 px-4 bg-[#004AC6] hover:bg-[#003DA3] active:scale-[0.99] text-white font-bold text-sm leading-5 rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
-                <span>Lanjutkan</span>
+                <span>Lanjutkan ke Langkah 2</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -180,3 +210,4 @@ export default function Step1ScreeningPage() {
     </main>
   );
 }
+
